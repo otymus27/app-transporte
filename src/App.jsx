@@ -1,35 +1,89 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './global.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import PrivateRoute from './routes/PrivateRoute';
+import LoginPage from './pages/Login/LoginPage';
+import HomePage from './pages/Home/HomePage';
+// import ClientesPage from './pages/Clientes/ClientesPage';
+// import UsuariosPage from './pages/Usuarios/UsuariosPage';
+// import CategoriasPage from './pages/Categorias/CategoriasPage';
+// import ItemPage from './pages/Item/ItemPage';
+// import EmprestimosPage from './pages/Emprestimos/EmprestimosPage.jsx';
+//import { SnackbarProvider } from './hooks/Emprestimos/useSnackbar.jsx'; // Importação do SnackbarProvider
+// import EmprestimosRelatorio from './components/Relatorios/EmprestimosRelatorio.jsx';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    {/* // <SnackbarProvider>      */}
+      {/* Envolvendo toda a aplicação com o SnackbarProvider */}
+      <Router>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
+            <Route
+              path="/home"
+              element={
+                <PrivateRoute>
+                  <HomePage />
+                </PrivateRoute>
+              }
+            />
+            {/* <Route
+              path="/cliente"
+              element={
+                <PrivateRoute>
+                  <ClientesPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/usuarios"
+              element={
+                <PrivateRoute>
+                  <UsuariosPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/categoria"
+              element={
+                <PrivateRoute>
+                  <CategoriasPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/item"
+              element={
+                <PrivateRoute>
+                  <ItemPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/emprestimo"
+              element={
+                <PrivateRoute>
+                  <EmprestimosPage />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/emprestimos/relatorio"
+              element={
+                <PrivateRoute>
+                  <EmprestimosRelatorio />
+                </PrivateRoute>
+              }
+            /> */}
+          </Routes>
+        </AuthProvider>
+      </Router>
+    {/* // </SnackbarProvider> */}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
