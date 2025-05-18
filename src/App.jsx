@@ -4,9 +4,10 @@ import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './routes/PrivateRoute';
 import LoginPage from './pages/Login/LoginPage';
 import HomePage from './pages/Home/HomePage';
-// import ClientesPage from './pages/Clientes/ClientesPage';
-// import UsuariosPage from './pages/Usuarios/UsuariosPage';
-// import CategoriasPage from './pages/Categorias/CategoriasPage';
+import CarrosPage from './pages/Carros/CarrosPage.jsx';
+import SetorPage from './pages/Setor/SetorPage.jsx';
+import UsuariosPage from './pages/Usuarios/UsuariosPage';
+import MotoristasPage from './pages/Motoristas/MotoristasPage';
 // import ItemPage from './pages/Item/ItemPage';
 // import EmprestimosPage from './pages/Emprestimos/EmprestimosPage.jsx';
 //import { SnackbarProvider } from './hooks/Emprestimos/useSnackbar.jsx'; // Importação do SnackbarProvider
@@ -21,6 +22,7 @@ function App() {
         <AuthProvider>
           <Routes>
             <Route path="/" element={<LoginPage />} />
+
             <Route
               path="/home"
               element={
@@ -29,14 +31,16 @@ function App() {
                 </PrivateRoute>
               }
             />
-            {/* <Route
-              path="/cliente"
+
+            <Route
+              path="/carro"
               element={
                 <PrivateRoute>
-                  <ClientesPage />
+                  <CarrosPage />
                 </PrivateRoute>
               }
             />
+
             <Route
               path="/usuarios"
               element={
@@ -45,39 +49,26 @@ function App() {
                 </PrivateRoute>
               }
             />
+
             <Route
-              path="/categoria"
+              path="/motorista"
               element={
                 <PrivateRoute>
-                  <CategoriasPage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/item"
-              element={
-                <PrivateRoute>
-                  <ItemPage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/emprestimo"
-              element={
-                <PrivateRoute>
-                  <EmprestimosPage />
+                  <MotoristasPage />
                 </PrivateRoute>
               }
             />
 
             <Route
-              path="/emprestimos/relatorio"
+              path="/setor"
               element={
                 <PrivateRoute>
-                  <EmprestimosRelatorio />
+                  <SetorPage />
                 </PrivateRoute>
               }
-            /> */}
+            />
+
+            
           </Routes>
         </AuthProvider>
       </Router>

@@ -49,13 +49,13 @@ const Sidebar = () => {
 
   const menuStructure = [
     {
-      key: 'clientes',
+      key: 'carros',
       icon: <People />,
-      text: 'Clientes',
+      text: 'Carros',
       children: [
-        { text: 'Gerenciar', path: '/cliente', icon: <AddCircleOutline /> },
-        { text: 'Consultar', path: '/clientes/consultar', icon: <Search /> },
-        { text: 'Relatório', path: '/clientes/relatorio', icon: <BarChart /> },
+        { text: 'Gerenciar', path: '/carro', icon: <AddCircleOutline /> },
+        { text: 'Consultar', path: '/carro/consultar', icon: <Search /> },
+        { text: 'Relatório', path: '/carro/relatorio', icon: <BarChart /> },
       ],
     },
     {
@@ -69,45 +69,36 @@ const Sidebar = () => {
       ],
     },
     {
-      key: 'itens',
+      key: 'motoristas',
       icon: <Inventory />,
-      text: 'Itens',
+      text: 'Motoristas',
       children: [
-        { text: 'Gerenciar', path: '/item', icon: <AddCircleOutline /> },
-        { text: 'Consultas', path: '/item/consulta', icon: <Search /> },
-        { text: 'Relatório', path: '/itens/relatorio', icon: <BarChart /> },
+        { text: 'Gerenciar', path: '/motorista', icon: <AddCircleOutline /> },
+        { text: 'Consultas', path: '/motorista/consulta', icon: <Search /> },
+        { text: 'Relatório', path: '/motorista/relatorio', icon: <BarChart /> },
       ],
     },
     {
-      key: 'categorias',
+      key: 'setores',
       icon: <Category />,
-      text: 'Categorias',
+      text: 'Setores',
       children: [
-        { text: 'Gerenciar', path: '/categoria', icon: <AddCircleOutline /> },
-        { text: 'Consultar', path: '/categorias/consultar', icon: <Search /> },
-        { text: 'Relatório', path: '/categorias/relatorio', icon: <BarChart /> },
-      ],
+        { text: 'Gerenciar', path: '/setor', icon: <AddCircleOutline /> },
+        { text: 'Consultar', path: '/setor/consultar', icon: <Search /> },
+        { text: 'Relatório', path: '/setor/relatorio', icon: <BarChart /> },
+      ],      
     },
     {
-      key: 'emprestimos',
+      key: 'solicitacoes',
       icon: <Assignment />,
-      text: 'Empréstimos',
+      text: 'Solicitações',
       children: [
-        { text: 'Novo', path: '/emprestimo', icon: <AddCircleOutline /> },
-        { text: 'Consultar', path: '/emprestimos/consultar', icon: <Search /> },
-        { text: 'Relatório', path: '/emprestimos/relatorio', icon: <BarChart /> },
+        { text: 'Novo', path: '/solicitacao', icon: <AddCircleOutline /> },
+        { text: 'Consultar', path: '/solicitacao/consultar', icon: <Search /> },
+        { text: 'Relatório', path: '/solicitacao/relatorio', icon: <BarChart /> },
       ],
     },
-    {
-      key: 'devolucoes',
-      icon: <AssignmentReturn />,
-      text: 'Devoluções',
-      children: [
-        { text: 'Registrar', path: '/devolucoes/registrar', icon: <AddCircleOutline /> },
-        { text: 'Consultar', path: '/devolucoes/consultar', icon: <Search /> },
-        { text: 'Relatório', path: '/devolucoes/relatorio', icon: <BarChart /> },
-      ],
-    },
+    
   ];
 
   const drawerContent = (

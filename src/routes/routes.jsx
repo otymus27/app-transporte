@@ -1,11 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from '../pages/Home/HomePage.jsx'; // Página pública
 import PrivateRoute from './PrivateRoute.jsx';
-import ClientesPage from '../pages/Clientes/ClientesPage.jsx';
+import SetorPage from '../pages/Setor/SetorPage.jsx';
 import UsuariosPage from '../pages/Usuarios/UsuariosPage.jsx';
-import CategoriasPage from './pages/Categorias/CategoriasPage';
+import MotoristasPage from './pages/Motoristas/MotoristasPage.jsx';
 import EmprestimosPage from '../pages/Emprestimos/EmprestimosPage.jsx';
 import EmprestimosRelatorio from '../components/Relatorios/EmprestimosRelatorio.jsx';
+import CarrosPage from '../pages/Carro/CarrosPage.jsx';
 
 const AppRoutes = () => {
   return (
@@ -13,11 +14,11 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/home" element={<PrivateRoute>{/* <Dashboard /> */}</PrivateRoute>} />
-        {/* <Route
-          path="/cliente"
+        <Route
+          path="/carro"
           element={
             <PrivateRoute>
-              <ClientesPage></ClientesPage>
+              <CarrosPage></CarrosPage>
             </PrivateRoute>
           }
         />
@@ -32,19 +33,19 @@ const AppRoutes = () => {
         />
 
         <Route
-          path="/categoria"
+          path="/motorista"
           element={
             <PrivateRoute>
-              <CategoriasPage></CategoriasPage>
+              <MotoristasPage></MotoristasPage>
             </PrivateRoute>
           }
         />
 
         <Routes
-          path="/item"
+          path="/setor"
           element={
             <PrivateRoute>
-              <ItemPage></ItemPage>
+              <SetorPage></SetorPage>
             </PrivateRoute>
           }
         />
@@ -65,7 +66,7 @@ const AppRoutes = () => {
               <EmprestimosRelatorio></EmprestimosRelatorio>
             </PrivateRoute>
           }
-        /> */}
+        />
       </Routes>
     </Router>
   );
