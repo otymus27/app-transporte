@@ -55,6 +55,11 @@ const SolicitacaoTable = ({
         <TableCell>{formatCarro(s.carro?.placa)}</TableCell>
         <TableCell>{renderCell(s.motorista?.nome)}</TableCell>
         <TableCell>{renderCell(s.setor?.nome)}</TableCell>
+        <TableCell>{renderCell(s.horaSaida)}</TableCell>
+        <TableCell>{renderCell(s.kmInicial)}</TableCell>
+        <TableCell>{renderCell(s.horaChegada)}</TableCell>
+        <TableCell>{renderCell(s.kmFinal)}</TableCell>
+        <TableCell>{s.kmInicial != null && s.kmFinal != null ? s.kmFinal - s.kmInicial : '—'}</TableCell>
         <TableCell align="right">
           <IconButton size="small" color="primary" onClick={() => onEdit(s)} aria-label={`Editar solicitação ${s.id}`}>
             <Edit />
@@ -86,6 +91,11 @@ const SolicitacaoTable = ({
             <TableCell>Carro</TableCell>
             <TableCell>Motorista</TableCell>
             <TableCell>Setor</TableCell>
+            <TableCell>Saida</TableCell>
+            <TableCell>KM Inicial</TableCell>
+            <TableCell>Chegada</TableCell>
+            <TableCell>KM Chegada</TableCell>
+            <TableCell>KM Total</TableCell> {/* ← Distância */}
             <TableCell align="right">Ações</TableCell>
           </TableRow>
         </TableHead>

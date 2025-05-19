@@ -16,10 +16,15 @@ import { useEffect } from 'react';
 const destinosDisponiveis = [
   'Centro Administrativo',
   'HRS',
+  'HRSM',
+  'HRG',
+  'HRSAM',
+  'HRP',
   'HBDF',
   'HRT',
   'HRBZ',
   'Secretaria de Educação',
+  'CAPS-SM',
   'Delegacia',
   'Fórum',
   'Aeroporto',
@@ -32,7 +37,6 @@ const SolicitacaoModal = ({
   selectedSolicitacao,
   onSave,
   isLoading,
-  user,
   motoristas = [],
   setores = [],
   carros = [],
@@ -55,6 +59,10 @@ const SolicitacaoModal = ({
         destino: selectedSolicitacao.destino || '',
         dataSolicitacao: selectedSolicitacao.dataSolicitacao || dataAtual,
         status: selectedSolicitacao.status || 'PENDENTE',
+        horaSaida: selectedSolicitacao.horaSaida || '',
+        kmInicial: selectedSolicitacao.kmInicial || '',
+        horaChegada: selectedSolicitacao.horaChegada || '',
+        kmFinal: selectedSolicitacao.kmFinal || '',
       });
     } else {
       setFormData({
@@ -64,6 +72,10 @@ const SolicitacaoModal = ({
         destino: '',
         dataSolicitacao: dataAtual,
         status: 'PENDENTE',
+        horaSaida: '',
+        kmInicial: '',
+        horaChegada: '',
+        kmChegada: '',
       });
     }
   }, [open, selectedSolicitacao]);
@@ -80,6 +92,10 @@ const SolicitacaoModal = ({
       destino: formData.destino,
       dataSolicitacao: formData.dataSolicitacao,
       status: formData.status || 'PENDENTE',
+      horaSaida: formData.horaSaida,
+      kmInicial: formData.kmInicial,
+      horaChegada: formData.horaChegada,
+      kmFinal: formData.kmFinal,
     };
 
     onSave(payload);
@@ -90,7 +106,7 @@ const SolicitacaoModal = ({
       <DialogTitle>{isEditMode ? 'Editar Solicitação' : 'Nova Solicitação'}</DialogTitle>
 
       <DialogContent>
-        <TextField label="Usuário" value={user?.nome || ''} fullWidth margin="dense" variant="outlined" disabled />
+        {/* <TextField label="Usuário" value={user?.nome || ''} fullWidth margin="dense" variant="outlined" disabled /> */}
 
         <FormControl fullWidth margin="dense" required>
           <InputLabel id="motorista-label">Motorista</InputLabel>
@@ -148,10 +164,10 @@ const SolicitacaoModal = ({
           label="Data da Solicitação"
           type="date"
           value={formData.dataSolicitacao}
+          onChange={handleChange('dataSolicitacao')}
           fullWidth
           margin="dense"
           variant="outlined"
-          disabled
         />
 
         {isEditMode && (
@@ -165,6 +181,46 @@ const SolicitacaoModal = ({
             </Select>
           </FormControl>
         )}
+
+        <TextField
+          label="Horário da saída"
+          type="time"
+          value={formData.horaSaida}
+          onChange={handleChange('horaSaida')}
+          fullWidth
+          margin="dense"
+          variant="outlined"
+        />
+
+        <TextField
+          label="KM Inicial"
+          type="number"
+          value={formData.kmInicial}
+          onChange={handleChange('kmInicial')}
+          fullWidth
+          margin="dense"
+          variant="outlined"
+        />
+
+        <TextField
+          label="Horário da chegada"
+          type="time"
+          value={formData.horaChegada}
+          onChange={handleChange('horaChegada')}
+          fullWidth
+          margin="dense"
+          variant="outlined"
+        />
+
+        <TextField
+          label="KM Final"
+          type="number"
+          value={formData.kmFinal}
+          onChange={handleChange('kmFinal')}
+          fullWidth
+          margin="dense"
+          variant="outlined"
+        />
       </DialogContent>
 
       <DialogActions sx={{ pb: 2, pr: 2 }}>

@@ -29,6 +29,10 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
     destino: '',
     dataSolicitacao: new Date().toISOString().split('T')[0],
     status: 'PENDENTE',
+    horaSaida: '',
+    kmInicial: '',
+    horaChegada: '',
+    kmFinal: '',
   });
 
   const [notification, setNotification] = useState({
@@ -106,6 +110,10 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
             idCarro: solicitacao.idCarro || '',
             idMotorista: solicitacao.idMotorista || '',
             idSetor: solicitacao.idSetor || '',
+            horaSaida: solicitacao.horaSaida || '',
+            kmInicial: solicitacao.kmInicial || '',
+            horaChegada: solicitacao.horaChegada || '',
+            kmFinal: solicitacao.kmFinal || '',
           }
         : {
             dataSolicitacao: new Date().toISOString().split('T')[0],
@@ -114,6 +122,10 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
             idCarro: '',
             idMotorista: '',
             idSetor: '',
+            horaSaida: '',
+            kmInicial: '',
+            horaChegada: '',
+            kmFinal: '',
           },
     );
     setOpenModal(true);
@@ -130,6 +142,10 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
         destino: selectedSolicitacao.destino || '',
         dataSolicitacao: selectedSolicitacao.dataSolicitacao || new Date().toISOString().split('T')[0],
         status: selectedSolicitacao.status || 'PENDENTE',
+        horaSaida: selectedSolicitacao.horaSaida || '',
+        kmInicial: selectedSolicitacao.kmInicial || '',
+        horaChegada: selectedSolicitacao.horaChegada || '',
+        kmFinal: selectedSolicitacao.kmFinal || '',
       });
     } else {
       setFormData({
@@ -139,6 +155,10 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
         destino: '',
         dataSolicitacao: new Date().toISOString().split('T')[0],
         status: 'PENDENTE',
+        horaSaida: '',
+        kmInicial: '',
+        horaChegada: '',
+        kmFinal: '',
       });
     }
   }, [openModal, selectedSolicitacao]);
@@ -194,6 +214,10 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
       idCarro: '',
       idMotorista: '',
       idSetor: '',
+      horaSaida: '',
+      kmInicial: '',
+      horaChegada: '',
+      kmFinal: '',
     });
     setSearchTerm('');
   };

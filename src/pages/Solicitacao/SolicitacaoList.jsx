@@ -64,6 +64,11 @@ const SolicitacaoList = ({
     );
   }
 
+  const calcularDistancia = (kmInicial, kmFinal) => {
+    if (kmInicial == null || kmFinal == null) return '—';
+    return kmFinal - kmInicial;
+  };
+
   return (
     <TableContainer component={Paper} aria-label="Lista de solicitações">
       <Table>
@@ -116,6 +121,11 @@ const SolicitacaoList = ({
             <TableCell sx={{ fontWeight: 'bold' }}>Motorista</TableCell>
             <TableCell sx={{ fontWeight: 'bold' }}>Setor</TableCell>
             <TableCell sx={{ fontWeight: 'bold' }}>Usuário</TableCell>
+            <TableCell sx={{ fontWeight: 'bold' }}>Saida</TableCell>
+            <TableCell sx={{ fontWeight: 'bold' }}>Km Inicial</TableCell>
+            <TableCell sx={{ fontWeight: 'bold' }}>Chegada</TableCell>
+            <TableCell sx={{ fontWeight: 'bold' }}>KM Final</TableCell>
+            <TableCell sx={{ fontWeight: 'bold' }}>KM Total</TableCell>
 
             {user.role === 'ADMIN' && (
               <TableCell sx={{ fontWeight: 'bold' }} align="center">
@@ -139,7 +149,11 @@ const SolicitacaoList = ({
                 <TableCell>{s.nomeMotorista || '—'}</TableCell>
                 <TableCell>{s.nomeSetor || '—'}</TableCell>
                 <TableCell>{s.nomeUsuario || '—'}</TableCell>
-
+                <TableCell>{s.horaSaida || '—'}</TableCell>
+                <TableCell>{s.kmInicial || '—'}</TableCell>
+                <TableCell>{s.horaChegada || '—'}</TableCell>
+                <TableCell>{s.kmFinal || '—'}</TableCell>
+                <TableCell>{calcularDistancia(s.kmInicial, s.kmFinal)}</TableCell> {/* ← Distância */}
                 {user.role === 'ADMIN' && (
                   <TableCell align="center">
                     <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>

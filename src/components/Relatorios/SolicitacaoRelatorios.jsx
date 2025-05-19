@@ -36,6 +36,11 @@ const allColumns = [
   { key: 'motorista', label: 'Motorista' },
   { key: 'setor', label: 'Setor' },
   { key: 'usuario', label: 'Usuario' },
+  { key: 'horaSaida', label: 'Hora Saída' },
+  { key: 'kmInicial', label: 'kmInicial' },
+  { key: 'horaChegada', label: 'Hora Chegada' },
+  { key: 'kmFinal', label: 'kmFinal' },
+  { key: 'kmTotal', label: 'kmTotal' },
 ];
 
 const SolicitacaoRelatorios = ({ solicitacoes, loading }) => {
@@ -97,6 +102,15 @@ const SolicitacaoRelatorios = ({ solicitacoes, loading }) => {
               break;
             case 'setor':
               valor = solicitacao.nomeSetor ?? 'N/A';
+              break;
+            case 'horaSaida':
+              valor = solicitacao.horaSaida ?? 'N/A';
+              break;
+            case 'kmTotal':
+              valor =
+                solicitacao.kmInicial !== null && solicitacao.kmFinal !== null
+                  ? solicitacao.kmFinal - solicitacao.kmInicial
+                  : 'N/A';
               break;
             default:
               valor = solicitacao[col.key] ?? 'N/A';
