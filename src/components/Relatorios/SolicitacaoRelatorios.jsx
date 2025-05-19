@@ -32,18 +32,18 @@ const allColumns = [
   { key: 'destino', label: 'Destino' },
   { key: 'status', label: 'Status' },
   { key: 'dataSolicitacao', label: 'Data da Solicitação' },
-  { key: 'usuario', label: 'Usuário' },
-  { key: 'carro', label: 'Carro (Marca/Modelo/Placa)' },
+  { key: 'carro', label: 'Carro' },
   { key: 'motorista', label: 'Motorista' },
   { key: 'setor', label: 'Setor' },
+  { key: 'usuario', label: 'Usuario' },
 ];
 
-const SolicitacaoRelatorios = ({ solicitacoes, loading, usuarioLogado }) => {
+const SolicitacaoRelatorios = ({ solicitacoes, loading }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [openConfigDialog, setOpenConfigDialog] = useState(false);
 
   const [selectedColumns, setSelectedColumns] = useState(
-    allColumns.reduce((acc, column) => ({ ...acc, [column.key]: true }), {})
+    allColumns.reduce((acc, column) => ({ ...acc, [column.key]: true }), {}),
   );
 
   const [reportFormat, setReportFormat] = useState('completo');
@@ -84,22 +84,19 @@ const SolicitacaoRelatorios = ({ solicitacoes, loading, usuarioLogado }) => {
           let valor;
           switch (col.key) {
             case 'dataSolicitacao':
-              valor = solicitacao.dataSolicitacao
-                ? new Date(solicitacao.dataSolicitacao).toLocaleDateString()
-                : 'N/A';
+              valor = solicitacao.dataSolicitacao ? new Date(solicitacao.dataSolicitacao).toLocaleDateString() : 'N/A';
               break;
             case 'usuario':
-              valor = usuarioLogado?.nome ?? 'N/A';
+              valor = solicitacao.nomeUsuario ?? 'N/A';
               break;
             case 'carro':
-              const c = solicitacao.carro;
-              valor = c ? `${c.marca} / ${c.modelo} / ${c.placa}` : 'N/A';
+              valor = solicitacao.placaCarro ?? 'N/A';
               break;
             case 'motorista':
-              valor = solicitacao.motorista?.nome ?? 'N/A';
+              valor = solicitacao.nomeMotorista ?? 'N/A';
               break;
             case 'setor':
-              valor = solicitacao.setor?.nome ?? 'N/A';
+              valor = solicitacao.nomeSetor ?? 'N/A';
               break;
             default:
               valor = solicitacao[col.key] ?? 'N/A';
@@ -118,7 +115,12 @@ const SolicitacaoRelatorios = ({ solicitacoes, loading, usuarioLogado }) => {
       return;
     }
 
-    const doc = new jsPDF();
+    // Adicione a opção 'orientation: "l"' ao instanciar o jsPDF
+    const doc = new jsPDF({
+      orientation: 'l', // 'l' para paisagem (landscape), 'p' para retrato (portrait)
+      unit: 'mm', // Unidade de medida (opcional, padrão é 'mm')
+      format: 'a4', // Formato da página (opcional, padrão é 'a4')
+    });
     doc.setFontSize(18);
     doc.text('Relatório de Solicitações', 14, 22);
 
@@ -242,10 +244,7 @@ const SolicitacaoRelatorios = ({ solicitacoes, loading, usuarioLogado }) => {
                   <FormControlLabel
                     key={column.key}
                     control={
-                      <Checkbox
-                        checked={selectedColumns[column.key]}
-                        onChange={() => handleColumnToggle(column.key)}
-                      />
+                      <Checkbox checked={selectedColumns[column.key]} onChange={() => handleColumnToggle(column.key)} />
                     }
                     label={column.label}
                   />
@@ -255,7 +254,9 @@ const SolicitacaoRelatorios = ({ solicitacoes, loading, usuarioLogado }) => {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseConfig} color="primary">Cancelar</Button>
+          <Button onClick={handleCloseConfig} color="primary">
+            Cancelar
+          </Button>
           <Button onClick={handleCloseConfig} color="primary" variant="contained">
             Aplicar
           </Button>

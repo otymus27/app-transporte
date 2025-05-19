@@ -75,7 +75,13 @@ const SolicitacaoList = ({
               role="button"
               tabIndex={0}
               onKeyDown={(e) => e.key === 'Enter' && handleSortClick('dataSolicitacao')}
-              aria-sort={sortConfig.field === 'dataSolicitacao' ? (sortConfig.order === 'asc' ? 'ascending' : 'descending') : 'none'}
+              aria-sort={
+                sortConfig.field === 'dataSolicitacao'
+                  ? sortConfig.order === 'asc'
+                    ? 'ascending'
+                    : 'descending'
+                  : 'none'
+              }
             >
               Data da Solicitação {renderSortIcon('dataSolicitacao')}
             </TableCell>
@@ -86,7 +92,9 @@ const SolicitacaoList = ({
               role="button"
               tabIndex={0}
               onKeyDown={(e) => e.key === 'Enter' && handleSortClick('destino')}
-              aria-sort={sortConfig.field === 'destino' ? (sortConfig.order === 'asc' ? 'ascending' : 'descending') : 'none'}
+              aria-sort={
+                sortConfig.field === 'destino' ? (sortConfig.order === 'asc' ? 'ascending' : 'descending') : 'none'
+              }
             >
               Destino {renderSortIcon('destino')}
             </TableCell>
@@ -97,7 +105,9 @@ const SolicitacaoList = ({
               role="button"
               tabIndex={0}
               onKeyDown={(e) => e.key === 'Enter' && handleSortClick('status')}
-              aria-sort={sortConfig.field === 'status' ? (sortConfig.order === 'asc' ? 'ascending' : 'descending') : 'none'}
+              aria-sort={
+                sortConfig.field === 'status' ? (sortConfig.order === 'asc' ? 'ascending' : 'descending') : 'none'
+              }
             >
               Status {renderSortIcon('status')}
             </TableCell>
@@ -105,6 +115,7 @@ const SolicitacaoList = ({
             <TableCell sx={{ fontWeight: 'bold' }}>Carro</TableCell>
             <TableCell sx={{ fontWeight: 'bold' }}>Motorista</TableCell>
             <TableCell sx={{ fontWeight: 'bold' }}>Setor</TableCell>
+            <TableCell sx={{ fontWeight: 'bold' }}>Usuário</TableCell>
 
             {user.role === 'ADMIN' && (
               <TableCell sx={{ fontWeight: 'bold' }} align="center">
@@ -116,21 +127,18 @@ const SolicitacaoList = ({
 
         <TableBody>
           {paginatedSolicitacoes.map((s) => {
-            const dataFormatada = s.dataSolicitacao
-              ? new Date(s.dataSolicitacao).toLocaleDateString()
-              : '—';
-            const carroDesc = s.carro
-              ? `${s.carro.marca} ${s.carro.modelo} (${s.carro.placa})`
-              : '—';
+            const dataFormatada = s.dataSolicitacao ? new Date(s.dataSolicitacao).toLocaleDateString() : '—';
+            //const carroDesc = s.carro ? `${s.carro.marca} ${s.carro.modelo} (${s.carro.placa})` : '—';
 
             return (
               <TableRow key={s.id} hover tabIndex={-1}>
                 <TableCell>{dataFormatada}</TableCell>
                 <TableCell>{s.destino || '—'}</TableCell>
                 <TableCell>{s.status || '—'}</TableCell>
-                <TableCell>{carroDesc}</TableCell>
-                <TableCell>{s.motorista?.nome || '—'}</TableCell>
-                <TableCell>{s.setor?.nome || '—'}</TableCell>
+                <TableCell>{s.placaCarro}</TableCell>
+                <TableCell>{s.nomeMotorista || '—'}</TableCell>
+                <TableCell>{s.nomeSetor || '—'}</TableCell>
+                <TableCell>{s.nomeUsuario || '—'}</TableCell>
 
                 {user.role === 'ADMIN' && (
                   <TableCell align="center">

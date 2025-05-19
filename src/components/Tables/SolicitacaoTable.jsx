@@ -52,16 +52,11 @@ const SolicitacaoTable = ({
         <TableCell>{formatDate(s.dataSolicitacao)}</TableCell>
         <TableCell>{renderCell(s.destino)}</TableCell>
         <TableCell>{renderCell(s.status)}</TableCell>
-        <TableCell>{formatCarro(s.carro)}</TableCell>
+        <TableCell>{formatCarro(s.carro?.placa)}</TableCell>
         <TableCell>{renderCell(s.motorista?.nome)}</TableCell>
         <TableCell>{renderCell(s.setor?.nome)}</TableCell>
         <TableCell align="right">
-          <IconButton
-            size="small"
-            color="primary"
-            onClick={() => onEdit(s)}
-            aria-label={`Editar solicitação ${s.id}`}
-          >
+          <IconButton size="small" color="primary" onClick={() => onEdit(s)} aria-label={`Editar solicitação ${s.id}`}>
             <Edit />
           </IconButton>
           {isAdmin && (

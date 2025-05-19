@@ -41,11 +41,7 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
 
   const fetchListas = useCallback(async () => {
     try {
-      const [motoristasData, setoresData, carrosData] = await Promise.all([
-        getMotoristas(),
-        getSetores(),
-        getCarros(),
-      ]);
+      const [motoristasData, setoresData, carrosData] = await Promise.all([getMotoristas(), getSetores(), getCarros()]);
       setMotoristas(motoristasData);
       setSetores(setoresData);
       setCarros(carrosData);
@@ -93,7 +89,7 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
         (s) =>
           (s.titulo && s.titulo.toLowerCase().includes(term)) ||
           (s.descricao && s.descricao.toLowerCase().includes(term)) ||
-          (s.status && s.status.toLowerCase().includes(term))
+          (s.status && s.status.toLowerCase().includes(term)),
       );
     }
     setFilteredSolicitacoes(currentData);
@@ -118,7 +114,7 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
             idCarro: '',
             idMotorista: '',
             idSetor: '',
-          }
+          },
     );
     setOpenModal(true);
   };

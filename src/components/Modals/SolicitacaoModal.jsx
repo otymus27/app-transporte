@@ -15,7 +15,10 @@ import { useEffect } from 'react';
 
 const destinosDisponiveis = [
   'Centro Administrativo',
-  'Hospital Regional',
+  'HRS',
+  'HBDF',
+  'HRT',
+  'HRBZ',
   'Secretaria de Educação',
   'Delegacia',
   'Fórum',
@@ -41,6 +44,8 @@ const SolicitacaoModal = ({
 
   useEffect(() => {
     if (!open) return;
+
+    console.log('selectedSolicitacao:', selectedSolicitacao);
 
     if (selectedSolicitacao) {
       setFormData({
@@ -85,14 +90,7 @@ const SolicitacaoModal = ({
       <DialogTitle>{isEditMode ? 'Editar Solicitação' : 'Nova Solicitação'}</DialogTitle>
 
       <DialogContent>
-        <TextField
-          label="Usuário"
-          value={user?.nome || ''}
-          fullWidth
-          margin="dense"
-          variant="outlined"
-          disabled
-        />
+        <TextField label="Usuário" value={user?.nome || ''} fullWidth margin="dense" variant="outlined" disabled />
 
         <FormControl fullWidth margin="dense" required>
           <InputLabel id="motorista-label">Motorista</InputLabel>
@@ -113,12 +111,7 @@ const SolicitacaoModal = ({
 
         <FormControl fullWidth margin="dense" required>
           <InputLabel id="setor-label">Setor</InputLabel>
-          <Select
-            labelId="setor-label"
-            value={formData.idSetor}
-            onChange={handleChange('idSetor')}
-            label="Setor"
-          >
+          <Select labelId="setor-label" value={formData.idSetor} onChange={handleChange('idSetor')} label="Setor">
             <MenuItem value="">Selecione o setor</MenuItem>
             {setores.map(({ id, nome }) => (
               <MenuItem key={id} value={id}>
@@ -130,12 +123,7 @@ const SolicitacaoModal = ({
 
         <FormControl fullWidth margin="dense" required>
           <InputLabel id="carro-label">Carro</InputLabel>
-          <Select
-            labelId="carro-label"
-            value={formData.idCarro}
-            onChange={handleChange('idCarro')}
-            label="Carro"
-          >
+          <Select labelId="carro-label" value={formData.idCarro} onChange={handleChange('idCarro')} label="Carro">
             <MenuItem value="">Selecione o carro</MenuItem>
             {carros.map(({ id, marca, modelo, placa }) => (
               <MenuItem key={id} value={id}>
@@ -147,12 +135,7 @@ const SolicitacaoModal = ({
 
         <FormControl fullWidth margin="dense" required>
           <InputLabel id="destino-label">Destino</InputLabel>
-          <Select
-            labelId="destino-label"
-            value={formData.destino}
-            onChange={handleChange('destino')}
-            label="Destino"
-          >
+          <Select labelId="destino-label" value={formData.destino} onChange={handleChange('destino')} label="Destino">
             {destinosDisponiveis.map((destino) => (
               <MenuItem key={destino} value={destino}>
                 {destino}
@@ -174,12 +157,7 @@ const SolicitacaoModal = ({
         {isEditMode && (
           <FormControl fullWidth margin="dense" required>
             <InputLabel id="status-label">Status</InputLabel>
-            <Select
-              labelId="status-label"
-              value={formData.status}
-              onChange={handleChange('status')}
-              label="Status"
-            >
+            <Select labelId="status-label" value={formData.status} onChange={handleChange('status')} label="Status">
               <MenuItem value="PENDENTE">PENDENTE</MenuItem>
               <MenuItem value="APROVADO">APROVADO</MenuItem>
               <MenuItem value="REPROVADO">REPROVADO</MenuItem>
