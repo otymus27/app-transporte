@@ -7,6 +7,7 @@ import MotoristasPage from './pages/Motoristas/MotoristasPage.jsx';
 import EmprestimosPage from '../pages/Emprestimos/EmprestimosPage.jsx';
 import EmprestimosRelatorio from '../components/Relatorios/EmprestimosRelatorio.jsx';
 import CarrosPage from '../pages/Carro/CarrosPage.jsx';
+import SolicitacaoPage from '../pages/Solicitacao/SolicitacaoPage.jsx';
 
 const AppRoutes = () => {
   return (
@@ -51,22 +52,15 @@ const AppRoutes = () => {
         />
 
         <Routes
-          path="/emprestimo"
+          path="/solicitacao"
           element={
             <PrivateRoute>
-              <EmprestimosPage></EmprestimosPage>
+              <SolicitacaoPage></SolicitacaoPage>
             </PrivateRoute>
           }
         />
 
-        <Routes
-          path="/emprestimo/relatorio"
-          element={
-            <PrivateRoute>
-              <EmprestimosRelatorio></EmprestimosRelatorio>
-            </PrivateRoute>
-          }
-        />
+        
       </Routes>
     </Router>
   );

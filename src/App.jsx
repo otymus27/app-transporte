@@ -8,6 +8,7 @@ import CarrosPage from './pages/Carros/CarrosPage.jsx';
 import SetorPage from './pages/Setor/SetorPage.jsx';
 import UsuariosPage from './pages/Usuarios/UsuariosPage';
 import MotoristasPage from './pages/Motoristas/MotoristasPage';
+import SolicitacaoPage from './pages/Solicitacao/SolicitacaoPage.jsx';
 // import ItemPage from './pages/Item/ItemPage';
 // import EmprestimosPage from './pages/Emprestimos/EmprestimosPage.jsx';
 //import { SnackbarProvider } from './hooks/Emprestimos/useSnackbar.jsx'; // Importação do SnackbarProvider
@@ -64,6 +65,15 @@ function App() {
               element={
                 <PrivateRoute>
                   <SetorPage />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/solicitacao"
+              element={
+                <PrivateRoute>
+                  <SolicitacaoPage />
                 </PrivateRoute>
               }
             />
