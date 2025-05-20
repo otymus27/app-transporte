@@ -4,8 +4,6 @@ import PrivateRoute from './PrivateRoute.jsx';
 import SetorPage from '../pages/Setor/SetorPage.jsx';
 import UsuariosPage from '../pages/Usuarios/UsuariosPage.jsx';
 import MotoristasPage from './pages/Motoristas/MotoristasPage.jsx';
-import EmprestimosPage from '../pages/Emprestimos/EmprestimosPage.jsx';
-import EmprestimosRelatorio from '../components/Relatorios/EmprestimosRelatorio.jsx';
 import CarrosPage from '../pages/Carro/CarrosPage.jsx';
 import SolicitacaoPage from '../pages/Solicitacao/SolicitacaoPage.jsx';
 
@@ -54,13 +52,11 @@ const AppRoutes = () => {
         <Routes
           path="/solicitacao"
           element={
-            <PrivateRoute>
+            <PrivateRoute allowedRoles={['ADMIN', 'GERENTE', 'BASIC']}>
               <SolicitacaoPage></SolicitacaoPage>
             </PrivateRoute>
           }
         />
-
-        
       </Routes>
     </Router>
   );

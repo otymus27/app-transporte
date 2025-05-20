@@ -131,7 +131,8 @@ const SolicitacaoList = ({
             <TableCell sx={{ fontWeight: 'bold' }}>KM Final</TableCell>
             <TableCell sx={{ fontWeight: 'bold' }}>KM Total</TableCell>
 
-            {user.role === 'ADMIN' && (
+            {/* Aqui liberado pra todos perfis */}
+            {(user?.role === 'ADMIN' || user?.role === 'GERENTE' || user.role === 'BASIC') && (
               <TableCell sx={{ fontWeight: 'bold' }} align="center">
                 Ações
               </TableCell>
@@ -142,7 +143,6 @@ const SolicitacaoList = ({
         <TableBody>
           {paginatedSolicitacoes.map((s) => {
             const dataFormatada = s.dataSolicitacao ? new Date(s.dataSolicitacao).toLocaleDateString() : '—';
-            //const carroDesc = s.carro ? `${s.carro.marca} ${s.carro.modelo} (${s.carro.placa})` : '—';
 
             return (
               <TableRow key={s.id} hover tabIndex={-1}>
@@ -158,18 +158,20 @@ const SolicitacaoList = ({
                 <TableCell>{s.horaChegada || '—'}</TableCell>
                 <TableCell>{s.kmFinal || '—'}</TableCell>
                 <TableCell>{calcularDistancia(s.kmInicial, s.kmFinal)}</TableCell> {/* ← Distância */}
-                {user.role === 'ADMIN' && (
-                  <TableCell align="center">
-                    <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
-                      <IconButton
-                        color="primary"
-                        size="small"
-                        onClick={() => onEditSolicitacao(s)}
-                        aria-label={`Editar solicitação ${s.id}`}
-                      >
-                        <EditIcon fontSize="small" />
-                      </IconButton>
+                <TableCell align="center">
+                  <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
+                    {/* Aqui liberado pra todos perfis */}
+                    <IconButton
+                      color="primary"
+                      size="small"
+                      onClick={() => onEditSolicitacao(s)}
+                      aria-label={`Editar solicitação ${s.id}`}
+                    >
+                      <EditIcon fontSize="small" />
+                    </IconButton>
 
+                    {/* Aqui liberado só pra ADMIN e GERENTE */}
+                    {(user?.role === 'ADMIN' || user.role === 'GERENTE') && (
                       <IconButton
                         color="error"
                         size="small"
@@ -178,9 +180,9 @@ const SolicitacaoList = ({
                       >
                         <DeleteIcon fontSize="small" />
                       </IconButton>
-                    </Box>
-                  </TableCell>
-                )}
+                    )}
+                  </Box>
+                </TableCell>
               </TableRow>
             );
           })}

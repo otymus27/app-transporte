@@ -90,7 +90,10 @@ const CarroList = ({ paginatedCarros, isLoading, user, onEditCarro, onDeleteCarr
               Modelo
               {renderSortIcon('modelo')}
             </TableCell>
-            {user.role === 'ADMIN' && <TableCell sx={{ fontWeight: 'bold' }}>Ações</TableCell>}
+
+            {(user?.role === 'ADMIN' || user?.role === 'GERENTE') && (
+              <TableCell sx={{ fontWeight: 'bold' }}>Ações</TableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -99,18 +102,29 @@ const CarroList = ({ paginatedCarros, isLoading, user, onEditCarro, onDeleteCarr
               <TableCell>{carro.placa}</TableCell>
               <TableCell>{carro.marca}</TableCell>
               <TableCell>{carro.modelo}</TableCell>
-              {user.role === 'ADMIN' && (
-                <TableCell>
-                  <Box sx={{ display: 'flex', gap: 1 }}>
+
+              <TableCell>
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                  {/* Aqui liberado só pra ADMIN e GERENTE */}
+                  {(user?.role === 'ADMIN' || user.role === 'GERENTE') && (
                     <IconButton color="primary" size="small" onClick={() => onEditCarro(carro)}>
                       <EditIcon fontSize="small" />
                     </IconButton>
-                    <IconButton color="error" size="small" onClick={() => onDeleteCarro(carro.id)}>
+                  )}
+
+                  {/* Aqui liberado só pra ADMIN e GERENTE */}
+                  {(user?.role === 'ADMIN' || user.role === 'GERENTE') && (
+                    <IconButton
+                      color="error"
+                      size="small"
+                      onClick={() => onDeleteCarro(carro.id)}
+                      aria-label={`Excluir solicitação ${carro.id}`}
+                    >
                       <DeleteIcon fontSize="small" />
                     </IconButton>
-                  </Box>
-                </TableCell>
-              )}
+                  )}
+                </Box>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

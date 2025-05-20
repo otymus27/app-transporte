@@ -164,7 +164,8 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
   }, [openModal, selectedSolicitacao]);
 
   const handleSave = async (dataToSend) => {
-    if (!user || user.role !== 'ADMIN') {
+    //Lógica para permitir determinado perfil a executar esta ação
+    if (!user || (user.role !== 'ADMIN' && user.role !== 'GERENTE' && user.role !== 'BASIC')) {
       setNotification({
         open: true,
         message: 'Apenas administradores podem salvar solicitações.',
@@ -223,7 +224,8 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
   };
 
   const handleDeleteSolicitacao = async (id) => {
-    if (!user || user.role !== 'ADMIN') {
+    //Lógica para permitir determinado perfil a executar esta ação
+    if (!user || (user.role !== 'ADMIN' && user.role !== 'GERENTE')) {
       setNotification({
         open: true,
         message: 'Apenas administradores podem excluir solicitações.',

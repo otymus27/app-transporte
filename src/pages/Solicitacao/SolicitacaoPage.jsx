@@ -129,12 +129,18 @@ const SolicitacaoPage = () => {
               value={searchTerm}
               onChange={handleSearchChange}
             />
-            {user.role === 'ADMIN' && (
+
+            {/* Aqui liberado pra todos perfis */}
+            {(user?.role === 'ADMIN' || user?.role === 'GERENTE' || user.role === 'BASIC') && (
               <>
                 <Button variant="contained" color="primary" onClick={() => handleOpenModal()}>
                   Adicionar Solicitação
                 </Button>
-                <GerarRelatorioSolicitacoes solicitacoes={filteredSolicitacoes} loading={isLoading} />
+
+                {/* Aqui liberado só pra ADMIN e GERENTE */}
+                {(user?.role === 'ADMIN' || user.role === 'GERENTE') && (
+                  <GerarRelatorioSolicitacoes solicitacoes={filteredSolicitacoes} loading={isLoading} />
+                )}
               </>
             )}
           </Box>

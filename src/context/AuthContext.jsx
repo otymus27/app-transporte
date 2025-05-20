@@ -24,6 +24,8 @@ export const AuthProvider = ({ children }) => {
     setAuthToken(token);
     try {
       const userData = await fetchUserData();
+      console.log('Usuário carregado:', userData); // <- VERIFIQUE SE TEM role AQUI
+
       setUser(userData);
       setIsLoggedIn(true);
     } catch (err) {
@@ -73,9 +75,7 @@ export const AuthProvider = ({ children }) => {
   }, [loadAuthenticatedUser]);
 
   return (
-    <AuthContext.Provider
-      value={{ user, isLoggedIn, loading, error, login: handleLogin, logout: handleLogout }}
-    >
+    <AuthContext.Provider value={{ user, isLoggedIn, loading, error, login: handleLogin, logout: handleLogout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -116,10 +116,11 @@ const CarroPage = () => {
               onChange={handleSearchChange}
             />
 
-            {user.role === 'ADMIN' && (
+            {/* Aqui liberado pra todos perfis */}
+            {(user?.role === 'ADMIN' || user?.role === 'GERENTE') && (
               <>
                 <Button variant="contained" color="primary" onClick={() => handleOpenModal()}>
-                  Adicionar Motorista
+                  Adicionar Carros
                 </Button>
                 <GerarRelatorioCarros carros={filteredCarros} loading={isLoading} />
               </>

@@ -13,7 +13,7 @@ export const login = async (login, senha) => {
     if (!token) throw new Error('Token de acesso não retornado pela API');
 
     setAuthToken(token);
-    if (import.meta.env.DEV) console.log("Resposta do login:", response.data);
+    if (import.meta.env.DEV) console.log('Resposta do login:', response.data);
     return response.data;
   } catch (error) {
     throw new Error(parseAxiosError(error));
@@ -26,10 +26,18 @@ export const login = async (login, senha) => {
 export const fetchUserData = async () => {
   try {
     const response = await API.get('/usuarios/logado');
-    if (import.meta.env.DEV) console.log("Resposta do fetchUserData:", response.data);
-    return Array.isArray(response.data) ? response.data[0] : response.data;
+    if (import.meta.env.DEV) console.log('Resposta do fetchUserData:', response.data);
+
+    const user = Array.isArray(response.data) ? response.data[0] : response.data;
+
+    // ✅ Adiciona o campo `role` com base no primeiro valor de `roles`
+    if (Array.isArray(user.roles) && user.roles.length > 0) {
+      user.role = user.roles[0]; // Ex: 'ADMIN', 'BASIC', etc.
+    }
+
+    return user;
   } catch (error) {
-    if (import.meta.env.DEV) console.error("Erro no fetchUserData:", error);
+    if (import.meta.env.DEV) console.error('Erro no fetchUserData:', error);
     throw new Error(parseAxiosError(error));
   }
 };
