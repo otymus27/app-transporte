@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 export const useSolicitacaoPagination = (
   filteredSolicitacoes,
   itemsPerPage = 10,
-  initialSort = { field: 'data', order: 'desc' }
+  initialSort = { field: 'data', order: 'desc' },
 ) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortConfig, setSortConfig] = useState(initialSort);
@@ -23,9 +23,7 @@ export const useSolicitacaoPagination = (
           return sortConfig.order === 'asc' ? dateA - dateB : dateB - dateA;
         }
 
-        return sortConfig.order === 'asc'
-          ? valueA.localeCompare(valueB)
-          : valueB.localeCompare(valueA);
+        return sortConfig.order === 'asc' ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
       });
   }, [filteredSolicitacoes, sortConfig]);
 

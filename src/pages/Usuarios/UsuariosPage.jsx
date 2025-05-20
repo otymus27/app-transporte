@@ -20,10 +20,7 @@ const UsuariosPage = () => {
   const navigate = useNavigate();
 
   // Estado para ordenação
-  const [sortConfig, setSortConfig] = useState({
-    field: 'login',
-    order: 'asc',
-  });
+  const [sortConfig, setSortConfig] = useState({ field: 'nome', order: 'asc' });
 
   // Lógica de gerenciamento dos usuários
   const {
@@ -55,7 +52,7 @@ const UsuariosPage = () => {
 
   // Lógica de paginação
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
   const totalPages = Math.ceil(sortedUsuarios.length / itemsPerPage);
   const paginatedUsuarios = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -119,6 +116,7 @@ const UsuariosPage = () => {
             Gerenciamento de Usuários
           </Typography>
 
+          {/* Aqui é renderizado o campo de busca e botoes adicionar e gerar relatorio */}
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 2 }}>
             <Search sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
             <TextField

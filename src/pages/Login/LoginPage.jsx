@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import {
-  Box, Button, Typography, FormControl, InputLabel, Input,
-  InputAdornment, Avatar, Alert, CircularProgress
+  Box,
+  Button,
+  Typography,
+  FormControl,
+  InputLabel,
+  Input,
+  InputAdornment,
+  Avatar,
+  Alert,
+  CircularProgress,
 } from '@mui/material';
 import { FaUser, FaLock } from 'react-icons/fa';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -9,8 +17,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 // Substitua pelo seu logo local ou remoto
-const logoUrl = 'https://www.saude.df.gov.br/documents/37101/0/Logo+SESDF+-+Vers%C3%A3o+Horizontal+v1+%282%29.png/349cd382-761d-c647-5199-0f77cff690e5?t=1727180366655';
-const backgroundImage = 'https://saude.df.gov.br/documents/37101/0/ambulancia+%282%29.jpg/b91e9cf6-2d45-66bc-1be9-6295a610c8f2?t=1740750115973';
+const logoUrl =
+  'https://www.saude.df.gov.br/documents/37101/0/Logo+SESDF+-+Vers%C3%A3o+Horizontal+v1+%282%29.png/349cd382-761d-c647-5199-0f77cff690e5?t=1727180366655';
+const backgroundImage = '/ambulancia.jpg';
 
 const LoginPage = () => {
   const [loginInput, setLoginInput] = useState('');
@@ -103,7 +112,11 @@ const LoginPage = () => {
         </Box>
 
         {/* Erro */}
-        {localError && <Alert severity="error" sx={{ mb: 2 }}>{localError}</Alert>}
+        {localError && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {localError}
+          </Alert>
+        )}
 
         {/* Campos */}
         <FormControl fullWidth margin="normal" variant="standard">
@@ -113,7 +126,11 @@ const LoginPage = () => {
             type="text"
             value={loginInput}
             onChange={(e) => setLoginInput(e.target.value)}
-            startAdornment={<InputAdornment position="start"><FaUser /></InputAdornment>}
+            startAdornment={
+              <InputAdornment position="start">
+                <FaUser />
+              </InputAdornment>
+            }
             placeholder="Digite seu nome de utilizador"
           />
         </FormControl>
@@ -125,7 +142,11 @@ const LoginPage = () => {
             type="password"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
-            startAdornment={<InputAdornment position="start"><FaLock /></InputAdornment>}
+            startAdornment={
+              <InputAdornment position="start">
+                <FaLock />
+              </InputAdornment>
+            }
             placeholder="Digite sua senha"
           />
         </FormControl>

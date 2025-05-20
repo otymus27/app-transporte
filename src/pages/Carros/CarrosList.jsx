@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Table,
   TableBody,
@@ -11,27 +11,19 @@ import {
   Typography,
   Box,
   IconButton,
-} from "@mui/material";
+} from '@mui/material';
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
   ArrowUpward as ArrowUpIcon,
   ArrowDownward as ArrowDownIcon,
-} from "@mui/icons-material";
+} from '@mui/icons-material';
 
-const CarroList = ({
-  paginatedCarros,
-  isLoading,
-  user,
-  onEditCarro,
-  onDeleteCarro,
-  sortConfig,
-  onSortChange,
-}) => {
+const CarroList = ({ paginatedCarros, isLoading, user, onEditCarro, onDeleteCarro, sortConfig, onSortChange }) => {
   // Função para renderizar ícone de ordenação
   const renderSortIcon = (field) => {
     if (sortConfig.field !== field) return null;
-    return sortConfig.order === "asc" ? <ArrowUpIcon fontSize="small" /> : <ArrowDownIcon fontSize="small" />;
+    return sortConfig.order === 'asc' ? <ArrowUpIcon fontSize="small" /> : <ArrowDownIcon fontSize="small" />;
   };
 
   // Função para manipular clique de ordenação
@@ -42,17 +34,17 @@ const CarroList = ({
   // Renderização de loading
   if (isLoading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
         <CircularProgress />
       </Box>
     );
   }
-  
-  // Lista vazia
+
+  // Exibe mensagem se não houver registros
   if (!paginatedCarros || paginatedCarros.length === 0) {
     return (
-      <Typography variant="body1" sx={{ textAlign: "center", my: 4 }}>
-        Nenhum carro encontrado.
+      <Typography variant="body1" sx={{ textAlign: 'center', my: 4 }}>
+        Nenhum registro encontrado.
       </Typography>
     );
   }
@@ -64,41 +56,41 @@ const CarroList = ({
           <TableRow>
             <TableCell
               sx={{
-                fontWeight: "bold",
-                cursor: "pointer",
-                userSelect: "none",
-                "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" },
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                userSelect: 'none',
+                '&:hover': { backgroundColor: 'rgba(0,0,0,0.05)' },
               }}
-              onClick={() => handleSortClick("placa")}
+              onClick={() => handleSortClick('placa')}
             >
               Placa
-              {renderSortIcon("placa")}
+              {renderSortIcon('placa')}
             </TableCell>
             <TableCell
               sx={{
-                fontWeight: "bold",
-                cursor: "pointer",
-                userSelect: "none",
-                "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" },
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                userSelect: 'none',
+                '&:hover': { backgroundColor: 'rgba(0,0,0,0.05)' },
               }}
-              onClick={() => handleSortClick("marca")}
+              onClick={() => handleSortClick('marca')}
             >
               Marca
-              {renderSortIcon("marca")}
+              {renderSortIcon('marca')}
             </TableCell>
             <TableCell
               sx={{
-                fontWeight: "bold",
-                cursor: "pointer",
-                userSelect: "none",
-                "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" },
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                userSelect: 'none',
+                '&:hover': { backgroundColor: 'rgba(0,0,0,0.05)' },
               }}
-              onClick={() => handleSortClick("modelo")}
+              onClick={() => handleSortClick('modelo')}
             >
               Modelo
-              {renderSortIcon("modelo")}
+              {renderSortIcon('modelo')}
             </TableCell>
-            {user.role === "ADMIN" && <TableCell sx={{ fontWeight: "bold" }}>Ações</TableCell>}
+            {user.role === 'ADMIN' && <TableCell sx={{ fontWeight: 'bold' }}>Ações</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -107,9 +99,9 @@ const CarroList = ({
               <TableCell>{carro.placa}</TableCell>
               <TableCell>{carro.marca}</TableCell>
               <TableCell>{carro.modelo}</TableCell>
-              {user.role === "ADMIN" && (
+              {user.role === 'ADMIN' && (
                 <TableCell>
-                  <Box sx={{ display: "flex", gap: 1 }}>
+                  <Box sx={{ display: 'flex', gap: 1 }}>
                     <IconButton color="primary" size="small" onClick={() => onEditCarro(carro)}>
                       <EditIcon fontSize="small" />
                     </IconButton>

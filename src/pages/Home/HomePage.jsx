@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Box, CircularProgress, Alert, Toolbar } from '@mui/material';
-import Container from '../../components/Container/Container.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import CustomHeader from '../../components/Header/CustomHeader.jsx';
 import useAuth from '../../hooks/useAuth.jsx';
 import Sidebar from '../../components/Sidebar/Sidebar.jsx';
-
 
 import DashboardResumo from '../../components/Dashboard/DashboardResumo.jsx';
 
@@ -48,7 +46,6 @@ const HomePage = () => {
           </Typography>
 
           <DashboardResumo />
-
         </Box>
         <Footer />
       </Box>

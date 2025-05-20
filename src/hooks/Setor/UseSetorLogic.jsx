@@ -1,10 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import {
-  getSetores,
-  addSetor,
-  updateSetor,
-  deleteSetor,
-} from '../../services/SetorService.js';
+import { getSetores, addSetor, updateSetor, deleteSetor } from '../../services/SetorService.js';
 import useDebounce from '../../hooks/useDebounce.js';
 
 export const useSetorLogic = (user, fetchTrigger) => {
@@ -59,9 +54,7 @@ export const useSetorLogic = (user, fetchTrigger) => {
     if (debouncedSearchTerm) {
       const term = debouncedSearchTerm.toLowerCase();
       currentData = allSetores.filter(
-        (s) =>
-          (s.nome && s.nome.toLowerCase().includes(term)) ||
-          (s.codigo && s.codigo.toLowerCase().includes(term))
+        (s) => (s.nome && s.nome.toLowerCase().includes(term)) || (s.codigo && s.codigo.toLowerCase().includes(term)),
       );
     }
     setFilteredSetores(currentData);
@@ -70,11 +63,7 @@ export const useSetorLogic = (user, fetchTrigger) => {
   // Modal Controls
   const handleOpenModal = (setor = null) => {
     setSelectedSetor(setor);
-    setFormData(
-      setor
-        ? { nome: setor.nome || '', codigo: setor.codigo || '' }
-        : { nome: '', codigo: '' }
-    );
+    setFormData(setor ? { nome: setor.nome || '', codigo: setor.codigo || '' } : { nome: '', codigo: '' });
     setOpenModal(true);
   };
 

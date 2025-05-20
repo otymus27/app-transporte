@@ -85,15 +85,15 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
     fetchListas();
   }, [fetchData, fetchListas, fetchTrigger]);
 
+  // Aqui é feita a filtragem dos campos por motorista e destino
   useEffect(() => {
     let currentData = [...allSolicitacoes];
     if (debouncedSearchTerm) {
       const term = debouncedSearchTerm.toLowerCase();
       currentData = allSolicitacoes.filter(
         (s) =>
-          (s.titulo && s.titulo.toLowerCase().includes(term)) ||
-          (s.descricao && s.descricao.toLowerCase().includes(term)) ||
-          (s.status && s.status.toLowerCase().includes(term)),
+          (s.destino && s.destino.toLowerCase().includes(term)) ||
+          (s.nomeMotorista && s.nomeMotorista.toLowerCase().includes(term)),
       );
     }
     setFilteredSolicitacoes(currentData);

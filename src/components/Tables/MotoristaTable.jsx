@@ -1,7 +1,6 @@
 import { Table, TableHead, TableRow, TableCell, TableBody, IconButton, Box, Pagination } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 
-
 const MotoristaTable = ({ motoristas, onEdit, onDelete, currentPage, totalPages, onPageChange, isAdmin }) => {
   return (
     <>
@@ -25,7 +24,7 @@ const MotoristaTable = ({ motoristas, onEdit, onDelete, currentPage, totalPages,
           ) : (
             motoristas.map((motorista) => (
               <TableRow key={motorista.id} hover>
-                <TableCell>{motorista.id}</TableCell>                
+                <TableCell>{motorista.id}</TableCell>
                 <TableCell>{motorista.matricula}</TableCell>
                 <TableCell>{motorista.nome}</TableCell>
                 <TableCell>{motorista.telefone}</TableCell>

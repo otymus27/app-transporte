@@ -1,4 +1,3 @@
-
 import { Table, TableHead, TableRow, TableCell, TableBody, IconButton, Box, Pagination } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 
@@ -25,7 +24,7 @@ const CarroTable = ({ carros, onEdit, onDelete, currentPage, totalPages, onPageC
           ) : (
             carros.map((carro) => (
               <TableRow key={carro.id} hover>
-                <TableCell>{carro.id}</TableCell>                
+                <TableCell>{carro.id}</TableCell>
                 <TableCell>{carro.marca}</TableCell>
                 <TableCell>{carro.modelo}</TableCell>
                 <TableCell>{carro.placa}</TableCell>

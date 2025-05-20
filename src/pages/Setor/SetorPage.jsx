@@ -19,6 +19,7 @@ const SetorPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
+  // Estado para ordenação
   const [sortConfig, setSortConfig] = useState({ field: 'nome', order: 'asc' });
 
   const {
@@ -38,6 +39,7 @@ const SetorPage = () => {
     setFormData,
   } = useSetorLogic(user);
 
+  // Ordena as solicitações conforme o campo e ordem da configuração
   const sortedSetores = useMemo(() => {
     if (!filteredSetores) return [];
     return [...filteredSetores].sort((a, b) => {
@@ -47,18 +49,21 @@ const SetorPage = () => {
     });
   }, [filteredSetores, sortConfig]);
 
+  // Lógica de paginação
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
   const totalPages = Math.ceil(sortedSetores.length / itemsPerPage);
   const paginatedSetores = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     return sortedSetores.slice(startIndex, startIndex + itemsPerPage);
   }, [sortedSetores, currentPage]);
 
+  // Muda página da paginação
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
 
+  // Alterna ordenação por campo
   const handleSortChange = (field) => {
     setSortConfig((prevConfig) => {
       if (prevConfig.field === field) {
@@ -69,12 +74,15 @@ const SetorPage = () => {
     setCurrentPage(1);
   };
 
+  // Navegar para página inicial
   const handleGoHome = () => navigate('/home');
 
+  // Atualizar formulário no modal
   const handleFormChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  // Se não houver usuário autenticado, exibe uma mensagem de erro
   if (!user) {
     return (
       <Box sx={{ p: 3, display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -97,12 +105,13 @@ const SetorPage = () => {
             Gerenciamento de Setores
           </Typography>
 
+          {/* Aqui é renderizado o campo de busca e botoes adicionar e gerar relatorio */}
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 2 }}>
             <Search sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
             <TextField
               fullWidth
               variant="outlined"
-              placeholder="Pesquisar setores por nome..."
+              placeholder="Pesquisar setor por nome..."
               value={searchTerm}
               onChange={handleSearchChange}
             />

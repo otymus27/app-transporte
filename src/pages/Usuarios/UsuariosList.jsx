@@ -48,11 +48,11 @@ const UsuariosList = ({
     );
   }
 
-  // Exibe mensagem se não houver usuários
+  // Exibe mensagem se não houver registros
   if (!paginatedUsuarios || paginatedUsuarios.length === 0) {
     return (
       <Typography variant="body1" sx={{ textAlign: 'center', my: 4 }}>
-        Nenhum usuário encontrado.
+        Nenhum registro encontrado.
       </Typography>
     );
   }

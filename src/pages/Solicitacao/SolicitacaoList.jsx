@@ -35,6 +35,7 @@ const SolicitacaoList = ({
   sortConfig = { field: '', order: 'asc' },
   onSortChange,
 }) => {
+  // Função para renderizar ícone de ordenação
   const renderSortIcon = (field) => {
     if (sortConfig.field !== field) return null;
     return sortConfig.order === 'asc' ? (
@@ -44,10 +45,12 @@ const SolicitacaoList = ({
     );
   };
 
+  // Função para manipular clique de ordenação
   const handleSortClick = (field) => {
     onSortChange(field);
   };
 
+  // Renderização enquanto carrega
   if (isLoading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
@@ -56,10 +59,11 @@ const SolicitacaoList = ({
     );
   }
 
+  // Exibe mensagem se não houver registros
   if (paginatedSolicitacoes.length === 0) {
     return (
       <Typography variant="body1" sx={{ textAlign: 'center', my: 4 }}>
-        Nenhuma solicitação encontrada.
+        Nenhuma registro encontrada.
       </Typography>
     );
   }

@@ -21,8 +21,7 @@ const SolicitacaoPage = () => {
   const navigate = useNavigate();
 
   // Estado para ordenação
-  const [sortConfig, setSortConfig] = useState({ field: 'dataSolicitacao', order: 'asc' });
-  const [currentPage, setCurrentPage] = useState(1);
+  const [sortConfig, setSortConfig] = useState({ field: 'nome', order: 'asc' });
 
   const {
     filteredSolicitacoes,
@@ -54,21 +53,25 @@ const SolicitacaoPage = () => {
     });
   }, [filteredSolicitacoes, sortConfig]);
 
-  // Paginação
-  const totalPages = Math.ceil(sortedSolicitacoes.length / ITEMS_PER_PAGE);
+  // Lógica de paginação
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(sortedSolicitacoes.length / itemsPerPage);
   const paginatedSolicitacoes = useMemo(() => {
-    const start = (currentPage - 1) * ITEMS_PER_PAGE;
-    return sortedSolicitacoes.slice(start, start + ITEMS_PER_PAGE);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return sortedSolicitacoes.slice(startIndex, startIndex + itemsPerPage);
   }, [sortedSolicitacoes, currentPage]);
 
   // Muda página da paginação
-  const handlePageChange = (_, page) => setCurrentPage(page);
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
 
   // Alterna ordenação por campo
   const handleSortChange = (field) => {
-    setSortConfig(({ field: currentField, order }) => {
-      if (currentField === field) {
-        return { field, order: order === 'asc' ? 'desc' : 'asc' };
+    setSortConfig((prevConfig) => {
+      if (prevConfig.field === field) {
+        return { field, order: prevConfig.order === 'asc' ? 'desc' : 'asc' };
       }
       return { field, order: 'asc' };
     });
@@ -80,9 +83,10 @@ const SolicitacaoPage = () => {
 
   // Atualizar formulário no modal
   const handleFormChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  // Se não houver usuário autenticado, exibe uma mensagem de erro
   if (!user) {
     return (
       <Box
@@ -94,9 +98,7 @@ const SolicitacaoPage = () => {
           height: '100vh',
         }}
       >
-        <Alert severity="error">
-          Erro ao carregar dados do usuário. Por favor, faça login novamente.
-        </Alert>
+        <Alert severity="error">Erro ao carregar dados do usuário. Por favor, faça login novamente.</Alert>
       </Box>
     );
   }
@@ -117,12 +119,13 @@ const SolicitacaoPage = () => {
             Gerenciamento de Solicitações
           </Typography>
 
+          {/* Aqui é renderizado o campo de busca e botoes adicionar e gerar relatorio */}
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 2 }}>
             <Search sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
             <TextField
               fullWidth
               variant="outlined"
-              placeholder="Pesquisar solicitações por cliente ou status..."
+              placeholder="Pesquisar solicitações por motorista ou destino..."
               value={searchTerm}
               onChange={handleSearchChange}
             />

@@ -28,15 +28,18 @@ const MotoristasList = ({
   sortConfig,
   onSortChange,
 }) => {
+  // Função para renderizar ícone de ordenação
   const renderSortIcon = (field) => {
     if (sortConfig.field !== field) return null;
     return sortConfig.order === 'asc' ? <ArrowUpIcon fontSize="small" /> : <ArrowDownIcon fontSize="small" />;
   };
 
+  // Função para manipular clique de ordenação
   const handleSortClick = (field) => {
     onSortChange(field);
   };
 
+  // Renderização enquanto carrega
   if (isLoading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
@@ -45,10 +48,11 @@ const MotoristasList = ({
     );
   }
 
+  // Exibe mensagem se não houver registros
   if (!paginatedMotoristas || paginatedMotoristas.length === 0) {
     return (
       <Typography variant="body1" sx={{ textAlign: 'center', my: 4 }}>
-        Nenhum motorista encontrado.
+        Nenhum registro encontrado.
       </Typography>
     );
   }
