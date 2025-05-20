@@ -12,18 +12,19 @@ import {
   MenuItem,
 } from '@mui/material';
 
-const marcasDisponiveis = ['Toyota', 'Ford', 'Chevrolet', 'Volkswagen', 'Honda', 'Nissan', 'Hyundai', 'Kia', 'Fiat', 'Renault'];
+const marcasDisponiveis = ['CHEVROLET', 'FIAT', 'FORD', 'HONDA', 'HYUNDAI', 'KIA', 'NISSAN', 'PEUGEUT', 'RENAULT', 'TOYOTA', 'VOLKSWAGEN'];
 const modelosDisponiveis = {
-  Toyota: ['Corolla', 'Hilux', 'Yaris', 'RAV4'],
-  Honda: ['Civic', 'HR-V', 'Fit', 'City'],
-  Nissan: ['Versa', 'Kicks', 'Sentra'], 
-  Hyundai: ['HB20', 'Creta', 'i30'],
-  Kia: ['Seltos', 'Sportage', 'Picanto'],
-  Fiat: ['Palio', 'Argo', 'Toro'],
-  Renault: ['Sandero', 'Captur', 'Duster'],
-  Ford: ['Ka', 'Fiesta', 'Focus'],
-  Chevrolet: ['Onix', 'Cruze', 'S10', 'Tracker', 'Spin','Astra','Agile', 'Cobalt'],
-  Volkswagen: ['Gol', 'Polo', 'T-Cross'],
+  CHEVROLET: ['ONIX', 'Cruze', 'S10', 'Tracker', 'SPIN','Astra','Agile', 'COBALT'],
+  FIAT: ['AMBULANCIA','DOBLO','FURGÃO','PALIO', 'ARGO', 'TORO', 'MOBI', 'STRADA'],
+  FORD: ['Ka', 'Fiesta', 'Focus'],  
+  HONDA: ['Civic', 'HR-V', 'Fit', 'City'],  
+  HYUNDAI: ['HB20', 'Creta', 'i30'],
+  KIA: ['Seltos', 'Sportage', 'Picanto'],
+  NISSAN: ['Versa', 'Kicks', 'Sentra'], 
+  PEUGEUT: ['208', '3008', '5008'],
+  RENAULT: ['AMBULANCIA','SANDERO', 'CAPTUR', 'DUSTER','KWID','MASTER'],  
+  TOYOTA: ['Corolla', 'Hilux', 'Yaris', 'RAV4'],
+  VOLKSWAGEN: ['Gol', 'Polo', 'T-Cross'],
 };
 
 const CarroModal = ({

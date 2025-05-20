@@ -7,6 +7,9 @@ import CustomHeader from '../../components/Header/CustomHeader.jsx';
 import useAuth from '../../hooks/useAuth.jsx';
 import Sidebar from '../../components/Sidebar/Sidebar.jsx';
 
+
+import DashboardResumo from '../../components/Dashboard/DashboardResumo.jsx';
+
 const HomePage = () => {
   const { isLoggedIn, user, loading, error, logout } = useAuth();
   const navigate = useNavigate();
@@ -41,9 +44,11 @@ const HomePage = () => {
         <Toolbar />
         <Box sx={{ flexGrow: 1, p: 3 }}>
           <Typography variant="h4" component="h1" gutterBottom>
-            Bem-vindo, {user.login} ({user.role})
+            PAINEL INFORMATIVO - NUTRAN HRG
           </Typography>
-          <Typography variant="body1">Esta é a página inicial protegida.</Typography>
+
+          <DashboardResumo />
+
         </Box>
         <Footer />
       </Box>

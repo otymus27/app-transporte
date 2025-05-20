@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
-import { Button, Typography, Box, FormControl, InputLabel, Input, InputAdornment, Avatar, Alert } from '@mui/material';
+import {
+  Box, Button, Typography, FormControl, InputLabel, Input,
+  InputAdornment, Avatar, Alert, CircularProgress
+} from '@mui/material';
 import { FaUser, FaLock } from 'react-icons/fa';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useNavigate } from 'react-router-dom';
-import CircularProgress from '@mui/material/CircularProgress';
 import { useAuth } from '../../context/AuthContext';
+
+// Substitua pelo seu logo local ou remoto
+const logoUrl = 'https://www.saude.df.gov.br/documents/37101/0/Logo+SESDF+-+Vers%C3%A3o+Horizontal+v1+%282%29.png/349cd382-761d-c647-5199-0f77cff690e5?t=1727180366655';
+const backgroundImage = 'https://saude.df.gov.br/documents/37101/0/ambulancia+%282%29.jpg/b91e9cf6-2d45-66bc-1be9-6295a610c8f2?t=1740750115973';
 
 const LoginPage = () => {
   const [loginInput, setLoginInput] = useState('');
@@ -31,7 +37,7 @@ const LoginPage = () => {
     }
 
     try {
-      await login(loginInput, senha); // ✅ Usa o login do contexto
+      await login(loginInput, senha);
       navigate('/home');
     } catch (err) {
       setLocalError(err.message);
@@ -41,19 +47,65 @@ const LoginPage = () => {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', background: 'linear-gradient(to right, #4facfe, #00f2fe)', display: 'flex', justifyContent: 'center', alignItems: 'center', p: 2 }}>
-      <Box sx={{ width: '100%', maxWidth: 400, bgcolor: 'white', p: 4, borderRadius: 4, boxShadow: 3 }} component="form" onSubmit={handleLogin}>
-        <Box textAlign="center" mb={3}>
-          <Avatar sx={{ m: '0 auto', bgcolor: 'primary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography variant="h5" mt={1}>
-            Acesso ao Sistema
+    <Box
+      sx={{
+        minHeight: '100vh',
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        p: 2,
+        position: 'relative',
+        '::before': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 1,
+        },
+      }}
+    >
+      <Box
+        sx={{
+          width: '100%',
+          maxWidth: 420,
+          bgcolor: 'white',
+          p: 4,
+          borderRadius: 4,
+          boxShadow: 5,
+          zIndex: 2,
+        }}
+        component="form"
+        onSubmit={handleLogin}
+      >
+        {/* Logo */}
+        <Box display="flex" justifyContent="center" mb={2}>
+          <img src={logoUrl} alt="Logo" style={{ height: 60 }} />
+        </Box>
+
+        {/* Título */}
+        <Box textAlign="center" mb={2}>
+          <Typography variant="h6" color="textPrimary" fontWeight={600}>
+            Bem-vindo ao Sistema de Gestão de Solicitações
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            Faça login para continuar
           </Typography>
         </Box>
 
+        {/* Ícone */}
+        <Box textAlign="center" mb={2}>
+          <Avatar sx={{ m: '0 auto', bgcolor: 'primary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+        </Box>
+
+        {/* Erro */}
         {localError && <Alert severity="error" sx={{ mb: 2 }}>{localError}</Alert>}
 
+        {/* Campos */}
         <FormControl fullWidth margin="normal" variant="standard">
           <InputLabel htmlFor="login">Login</InputLabel>
           <Input
@@ -78,6 +130,7 @@ const LoginPage = () => {
           />
         </FormControl>
 
+        {/* Botão */}
         <Button type="submit" variant="contained" fullWidth sx={{ mt: 3 }} disabled={localLoading}>
           {localLoading ? <CircularProgress size={24} color="inherit" /> : 'Entrar'}
         </Button>

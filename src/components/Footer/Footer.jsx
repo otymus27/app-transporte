@@ -12,7 +12,7 @@ const Footer = () => {
       }}
     >
       <Typography variant="body2" color="text.secondary">
-        © {new Date().getFullYear()} Nome da Sua Empresa. Todos os direitos reservados.
+        © {new Date().getFullYear()} PrimeFull Development. Todos os direitos reservados.
       </Typography>
       {/* Adicione outras informações do rodapé aqui */}
     </Box>

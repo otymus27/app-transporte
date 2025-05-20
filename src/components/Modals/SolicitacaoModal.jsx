@@ -14,7 +14,7 @@ import {
 import { useEffect } from 'react';
 
 const destinosDisponiveis = [
-  'Centro Administrativo',
+  'HRBZ',
   'HRS',
   'HRSM',
   'HRG',
@@ -23,9 +23,9 @@ const destinosDisponiveis = [
   'HBDF',
   'HRT',
   'HRBZ',
-  'Secretaria de Educação',
+  'ADMC',
   'CAPS-SM',
-  'Delegacia',
+  'CAPS-GAMA',
   'Fórum',
   'Aeroporto',
   'Rodoviária',
@@ -175,9 +175,9 @@ const SolicitacaoModal = ({
             <InputLabel id="status-label">Status</InputLabel>
             <Select labelId="status-label" value={formData.status} onChange={handleChange('status')} label="Status">
               <MenuItem value="PENDENTE">PENDENTE</MenuItem>
-              <MenuItem value="APROVADO">APROVADO</MenuItem>
-              <MenuItem value="REPROVADO">REPROVADO</MenuItem>
-              <MenuItem value="CANCELADO">CANCELADO</MenuItem>
+              <MenuItem value="CONCLUIDA">CONCLUIDA</MenuItem>
+              <MenuItem value="RECUSADA">RECUSADA</MenuItem>
+              <MenuItem value="CANCELADA">CANCELADA</MenuItem>
             </Select>
           </FormControl>
         )}
