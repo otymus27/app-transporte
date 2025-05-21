@@ -14,10 +14,17 @@ import GerarRelatorioSetores from '../../components/Relatorios/SetorRelatorios.j
 import Sidebar from '../../components/Sidebar/Sidebar.jsx';
 import CustomHeader from '../../components/Header/CustomHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
+import { menuStructure } from '../../components/Menu/Menu.jsx';
 
 const SetorPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  // variaveis para uso do Menu
+  const userRole = user?.roles?.[0]?.nome?.toUpperCase();
+
+  const menu = menuStructure.find((menu) => menu.key === 'setores');
+  const isAddDisabled = menu?.permissions?.disableAdd?.includes(userRole);
 
   // Estado para ordenação
   const [sortConfig, setSortConfig] = useState({ field: 'nome', order: 'asc' });
@@ -115,14 +122,13 @@ const SetorPage = () => {
               value={searchTerm}
               onChange={handleSearchChange}
             />
-            {user.role === 'ADMIN' && (
-              <>
-                <Button variant="contained" color="primary" onClick={() => handleOpenModal()}>
-                  Adicionar Setor
-                </Button>
-                <GerarRelatorioSetores setores={filteredSetores} loading={isLoading} />
-              </>
-            )}
+
+            <>
+              <Button disabled={isAddDisabled} variant="contained" color="primary" onClick={() => handleOpenModal()}>
+                Adicionar Setor
+              </Button>
+              <GerarRelatorioSetores setores={filteredSetores} loading={isLoading} />
+            </>
           </Box>
 
           <SetorList

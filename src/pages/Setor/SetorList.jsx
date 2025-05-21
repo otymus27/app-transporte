@@ -18,8 +18,15 @@ import {
   ArrowUpward as ArrowUpIcon,
   ArrowDownward as ArrowDownIcon,
 } from '@mui/icons-material';
+import { menuStructure } from '../../components/Menu/Menu';
 
 const SetorList = ({ paginatedSetores, isLoading, user, onEditSetor, onDeleteSetor, sortConfig, onSortChange }) => {
+  // variaveis para uso do Menu
+  const userRole = user?.roles?.[0]?.nome?.toUpperCase();
+
+  const menu = menuStructure.find((menu) => menu.key === 'carros');
+  const isDeleteDisabled = menu?.permissions?.disableDelete?.includes(userRole);
+  const isEditDisabled = menu?.permissions?.disableEdit?.includes(userRole);
   // Função para renderizar ícone de ordenação
   const renderSortIcon = (field) => {
     if (sortConfig.field !== field) return null;
@@ -66,25 +73,29 @@ const SetorList = ({ paginatedSetores, isLoading, user, onEditSetor, onDeleteSet
               Nome
               {renderSortIcon('nome')}
             </TableCell>
-            {user.role === 'ADMIN' && <TableCell sx={{ fontWeight: 'bold' }}>Ações</TableCell>}
+            <TableCell sx={{ fontWeight: 'bold' }}>Ações</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {paginatedSetores.map((setor) => (
             <TableRow key={setor.id}>
               <TableCell>{setor.nome}</TableCell>
-              {user.role === 'ADMIN' && (
-                <TableCell>
-                  <Box sx={{ display: 'flex', gap: 1 }}>
-                    <IconButton color="primary" size="small" onClick={() => onEditSetor(setor)}>
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                    <IconButton color="error" size="small" onClick={() => onDeleteSetor(setor.id)}>
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
-                </TableCell>
-              )}
+
+              <TableCell>
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                  <IconButton disabled={isEditDisabled} color="primary" size="small" onClick={() => onEditSetor(setor)}>
+                    <EditIcon fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    disabled={isDeleteDisabled}
+                    color="error"
+                    size="small"
+                    onClick={() => onDeleteSetor(setor.id)}
+                  >
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </Box>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

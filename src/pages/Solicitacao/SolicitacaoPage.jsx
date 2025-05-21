@@ -13,12 +13,19 @@ import GerarRelatorioSolicitacoes from '../../components/Relatorios/SolicitacaoR
 import Sidebar from '../../components/Sidebar/Sidebar.jsx';
 import CustomHeader from '../../components/Header/CustomHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
+import { menuStructure } from '../../components/Menu/Menu.jsx';
 
 const ITEMS_PER_PAGE = 10;
 
 const SolicitacaoPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  // variaveis para uso do Menu
+  const userRole = user?.roles?.[0]?.nome?.toUpperCase();
+
+  const menu = menuStructure.find((menu) => menu.key === 'solicitacoes');
+  const isAddDisabled = menu?.permissions?.disableAdd?.includes(userRole);
 
   // Estado para ordenação
   const [sortConfig, setSortConfig] = useState({ field: 'nome', order: 'asc' });
@@ -130,19 +137,13 @@ const SolicitacaoPage = () => {
               onChange={handleSearchChange}
             />
 
-            {/* Aqui liberado pra todos perfis */}
-            {(user?.role === 'ADMIN' || user?.role === 'GERENTE' || user.role === 'BASIC') && (
-              <>
-                <Button variant="contained" color="primary" onClick={() => handleOpenModal()}>
-                  Adicionar Solicitação
-                </Button>
+            <>
+              <Button disabled={isAddDisabled} variant="contained" color="primary" onClick={() => handleOpenModal()}>
+                Adicionar Solicitação
+              </Button>
 
-                {/* Aqui liberado só pra ADMIN e GERENTE */}
-                {(user?.role === 'ADMIN' || user.role === 'GERENTE') && (
-                  <GerarRelatorioSolicitacoes solicitacoes={filteredSolicitacoes} loading={isLoading} />
-                )}
-              </>
-            )}
+              <GerarRelatorioSolicitacoes solicitacoes={filteredSolicitacoes} loading={isLoading} />
+            </>
           </Box>
 
           <SolicitacaoList

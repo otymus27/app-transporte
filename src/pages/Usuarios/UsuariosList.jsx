@@ -18,6 +18,7 @@ import {
   ArrowUpward as ArrowUpIcon,
   ArrowDownward as ArrowDownIcon,
 } from '@mui/icons-material';
+import { menuStructure } from '../../components/Menu/Menu';
 
 const UsuariosList = ({
   paginatedUsuarios,
@@ -28,6 +29,13 @@ const UsuariosList = ({
   sortConfig,
   onSortChange,
 }) => {
+  // variaveis para uso do Menu
+  const userRole = user?.roles?.[0]?.nome?.toUpperCase();
+
+  const menu = menuStructure.find((menu) => menu.key === 'carros');
+  const isDeleteDisabled = menu?.permissions?.disableDelete?.includes(userRole);
+  const isEditDisabled = menu?.permissions?.disableEdit?.includes(userRole);
+
   // Função para renderizar ícone de ordenação
   const renderSortIcon = (field) => {
     if (sortConfig.field !== field) return null;
@@ -99,18 +107,27 @@ const UsuariosList = ({
               <TableCell>
                 {usuario.roles && usuario.roles.length > 0 ? usuario.roles.map((role) => role.nome).join(', ') : 'N/A'}
               </TableCell>
-              {user.role === 'ADMIN' && (
-                <TableCell>
-                  <Box sx={{ display: 'flex', gap: 1 }}>
-                    <IconButton color="primary" size="small" onClick={() => onEditUsuario(usuario)}>
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                    <IconButton color="error" size="small" onClick={() => onDeleteUsuario(usuario.id)}>
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
-                </TableCell>
-              )}
+
+              <TableCell>
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                  <IconButton
+                    disabled={isEditDisabled}
+                    color="primary"
+                    size="small"
+                    onClick={() => onEditUsuario(usuario)}
+                  >
+                    <EditIcon fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    disabled={isDeleteDisabled}
+                    color="error"
+                    size="small"
+                    onClick={() => onDeleteUsuario(usuario.id)}
+                  >
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </Box>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -18,6 +18,7 @@ import {
   ArrowUpward as ArrowUpIcon,
   ArrowDownward as ArrowDownIcon,
 } from '@mui/icons-material';
+import { menuStructure } from '../../components/Menu/Menu';
 
 const headerStyle = {
   fontWeight: 'bold',
@@ -35,6 +36,13 @@ const SolicitacaoList = ({
   sortConfig = { field: '', order: 'asc' },
   onSortChange,
 }) => {
+  // variaveis para uso do Menu
+  const userRole = user?.roles?.[0]?.nome?.toUpperCase();
+
+  const menu = menuStructure.find((menu) => menu.key === 'solicitacoes');
+  const isDeleteDisabled = menu?.permissions?.disableDelete?.includes(userRole);
+  const isEditDisabled = menu?.permissions?.disableEdit?.includes(userRole);
+
   // Função para renderizar ícone de ordenação
   const renderSortIcon = (field) => {
     if (sortConfig.field !== field) return null;
@@ -131,12 +139,9 @@ const SolicitacaoList = ({
             <TableCell sx={{ fontWeight: 'bold' }}>KM Final</TableCell>
             <TableCell sx={{ fontWeight: 'bold' }}>KM Total</TableCell>
 
-            {/* Aqui liberado pra todos perfis */}
-            {(user?.role === 'ADMIN' || user?.role === 'GERENTE' || user.role === 'BASIC') && (
-              <TableCell sx={{ fontWeight: 'bold' }} align="center">
-                Ações
-              </TableCell>
-            )}
+            <TableCell sx={{ fontWeight: 'bold' }} align="center">
+              Ações
+            </TableCell>
           </TableRow>
         </TableHead>
 
@@ -160,8 +165,8 @@ const SolicitacaoList = ({
                 <TableCell>{calcularDistancia(s.kmInicial, s.kmFinal)}</TableCell> {/* ← Distância */}
                 <TableCell align="center">
                   <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
-                    {/* Aqui liberado pra todos perfis */}
                     <IconButton
+                      disabled={isEditDisabled}
                       color="primary"
                       size="small"
                       onClick={() => onEditSolicitacao(s)}
@@ -170,17 +175,15 @@ const SolicitacaoList = ({
                       <EditIcon fontSize="small" />
                     </IconButton>
 
-                    {/* Aqui liberado só pra ADMIN e GERENTE */}
-                    {(user?.role === 'ADMIN' || user.role === 'GERENTE') && (
-                      <IconButton
-                        color="error"
-                        size="small"
-                        onClick={() => onDeleteSolicitacao(s.id)}
-                        aria-label={`Excluir solicitação ${s.id}`}
-                      >
-                        <DeleteIcon fontSize="small" />
-                      </IconButton>
-                    )}
+                    <IconButton
+                      disabled={isDeleteDisabled}
+                      color="error"
+                      size="small"
+                      onClick={() => onDeleteSolicitacao(s.id)}
+                      aria-label={`Excluir solicitação ${s.id}`}
+                    >
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
                   </Box>
                 </TableCell>
               </TableRow>

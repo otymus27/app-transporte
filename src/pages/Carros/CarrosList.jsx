@@ -19,7 +19,17 @@ import {
   ArrowDownward as ArrowDownIcon,
 } from '@mui/icons-material';
 
+// import { useAuth } from '../../context/AuthContext';
+import { menuStructure } from '../../components/Menu/Menu.jsx';
+
 const CarroList = ({ paginatedCarros, isLoading, user, onEditCarro, onDeleteCarro, sortConfig, onSortChange }) => {
+  // variaveis para uso do Menu
+  const userRole = user?.roles?.[0]?.nome?.toUpperCase();
+
+  const menu = menuStructure.find((menu) => menu.key === 'carros');
+  const isDeleteDisabled = menu?.permissions?.disableDelete?.includes(userRole);
+  const isEditDisabled = menu?.permissions?.disableEdit?.includes(userRole);
+
   // Função para renderizar ícone de ordenação
   const renderSortIcon = (field) => {
     if (sortConfig.field !== field) return null;
@@ -91,9 +101,7 @@ const CarroList = ({ paginatedCarros, isLoading, user, onEditCarro, onDeleteCarr
               {renderSortIcon('modelo')}
             </TableCell>
 
-            {(user?.role === 'ADMIN' || user?.role === 'GERENTE') && (
-              <TableCell sx={{ fontWeight: 'bold' }}>Ações</TableCell>
-            )}
+            <TableCell sx={{ fontWeight: 'bold' }}>Ações</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -105,24 +113,19 @@ const CarroList = ({ paginatedCarros, isLoading, user, onEditCarro, onDeleteCarr
 
               <TableCell>
                 <Box sx={{ display: 'flex', gap: 1 }}>
-                  {/* Aqui liberado só pra ADMIN e GERENTE */}
-                  {(user?.role === 'ADMIN' || user.role === 'GERENTE') && (
-                    <IconButton color="primary" size="small" onClick={() => onEditCarro(carro)}>
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                  )}
+                  <IconButton disabled={isEditDisabled} color="primary" size="small" onClick={() => onEditCarro(carro)}>
+                    <EditIcon fontSize="small" />
+                  </IconButton>
 
-                  {/* Aqui liberado só pra ADMIN e GERENTE */}
-                  {(user?.role === 'ADMIN' || user.role === 'GERENTE') && (
-                    <IconButton
-                      color="error"
-                      size="small"
-                      onClick={() => onDeleteCarro(carro.id)}
-                      aria-label={`Excluir solicitação ${carro.id}`}
-                    >
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  )}
+                  <IconButton
+                    disabled={isDeleteDisabled}
+                    color="error"
+                    size="small"
+                    onClick={() => onDeleteCarro(carro.id)}
+                    aria-label={`Excluir solicitação ${carro.id}`}
+                  >
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
                 </Box>
               </TableCell>
             </TableRow>

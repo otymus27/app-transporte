@@ -14,10 +14,17 @@ import GerarRelatorioUsuarios from '../../components/Relatorios/UsuariosRelatori
 import Sidebar from '../../components/Sidebar/Sidebar.jsx';
 import CustomHeader from '../../components/Header/CustomHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
+import { menuStructure } from '../../components/Menu/Menu.jsx';
 
 const UsuariosPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  // variaveis para uso do Menu
+  const userRole = user?.roles?.[0]?.nome?.toUpperCase();
+
+  const menu = menuStructure.find((menu) => menu.key === 'carros');
+  const isAddDisabled = menu?.permissions?.disableAdd?.includes(userRole);
 
   // Estado para ordenação
   const [sortConfig, setSortConfig] = useState({ field: 'nome', order: 'asc' });
@@ -126,14 +133,13 @@ const UsuariosPage = () => {
               value={searchTerm}
               onChange={handleSearchChange}
             />
-            {user.role === 'ADMIN' && (
-              <>
-                <Button variant="contained" color="primary" onClick={() => handleOpenModal()}>
-                  Adicionar Usuário
-                </Button>
-                <GerarRelatorioUsuarios usuarios={filteredUsuarios} loading={isLoading} />
-              </>
-            )}
+
+            <>
+              <Button disabled={isAddDisabled} variant="contained" color="primary" onClick={() => handleOpenModal()}>
+                Adicionar Usuário
+              </Button>
+              <GerarRelatorioUsuarios usuarios={filteredUsuarios} loading={isLoading} />
+            </>
           </Box>
 
           <UsuariosList

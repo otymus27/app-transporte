@@ -14,10 +14,17 @@ import GerarRelatorioMotoristas from '../../components/Relatorios/MotoristasRela
 import Sidebar from '../../components/Sidebar/Sidebar.jsx';
 import CustomHeader from '../../components/Header/CustomHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
+import { menuStructure } from '../../components/Menu/Menu.jsx';
 
 const MotoristasPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  // variaveis para uso do Menu
+  const userRole = user?.roles?.[0]?.nome?.toUpperCase();
+
+  const menu = menuStructure.find((menu) => menu.key === 'motoristas');
+  const isAddDisabled = menu?.permissions?.disableAdd?.includes(userRole);
 
   // Estado para ordenação
   const [sortConfig, setSortConfig] = useState({ field: 'nome', order: 'asc' });
@@ -115,14 +122,13 @@ const MotoristasPage = () => {
               value={searchTerm}
               onChange={handleSearchChange}
             />
-            {user.role === 'ADMIN' && (
-              <>
-                <Button variant="contained" color="primary" onClick={() => handleOpenModal()}>
-                  Adicionar Motorista
-                </Button>
-                <GerarRelatorioMotoristas motoristas={filteredMotoristas} loading={isLoading} />
-              </>
-            )}
+
+            <>
+              <Button disabled={isAddDisabled} variant="contained" color="primary" onClick={() => handleOpenModal()}>
+                Adicionar Motorista
+              </Button>
+              <GerarRelatorioMotoristas motoristas={filteredMotoristas} loading={isLoading} />
+            </>
           </Box>
 
           <MotoristasList

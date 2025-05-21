@@ -16,10 +16,17 @@ import Footer from '../../components/Footer/Footer.jsx';
 
 import { Button } from '@mui/material';
 import CarroList from './CarrosList.jsx';
+import { menuStructure } from '../../components/Menu/Menu.jsx';
 
 const CarroPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  // variaveis para uso do Menu
+  const userRole = user?.roles?.[0]?.nome?.toUpperCase();
+
+  const menu = menuStructure.find((menu) => menu.key === 'carros');
+  const isAddDisabled = menu?.permissions?.disableAdd?.includes(userRole);
 
   // Estado para ordenação
   const [sortConfig, setSortConfig] = useState({ field: 'nome', order: 'asc' });
@@ -116,15 +123,12 @@ const CarroPage = () => {
               onChange={handleSearchChange}
             />
 
-            {/* Aqui liberado pra todos perfis */}
-            {(user?.role === 'ADMIN' || user?.role === 'GERENTE') && (
-              <>
-                <Button variant="contained" color="primary" onClick={() => handleOpenModal()}>
-                  Adicionar Carros
-                </Button>
-                <GerarRelatorioCarros carros={filteredCarros} loading={isLoading} />
-              </>
-            )}
+            <>
+              <Button disabled={isAddDisabled} variant="contained" color="primary" onClick={() => handleOpenModal()}>
+                Adicionar Carros
+              </Button>
+              <GerarRelatorioCarros carros={filteredCarros} loading={isLoading} />
+            </>
           </Box>
 
           <CarroList

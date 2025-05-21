@@ -18,6 +18,7 @@ import {
   ArrowUpward as ArrowUpIcon,
   ArrowDownward as ArrowDownIcon,
 } from '@mui/icons-material';
+import { menuStructure } from '../../components/Menu/Menu';
 
 const MotoristasList = ({
   paginatedMotoristas,
@@ -28,6 +29,13 @@ const MotoristasList = ({
   sortConfig,
   onSortChange,
 }) => {
+  // variaveis para uso do Menu
+  const userRole = user?.roles?.[0]?.nome?.toUpperCase();
+
+  const menu = menuStructure.find((menu) => menu.key === 'motoristas');
+  const isDeleteDisabled = menu?.permissions?.disableDelete?.includes(userRole);
+  const isEditDisabled = menu?.permissions?.disableEdit?.includes(userRole);
+
   // Função para renderizar ícone de ordenação
   const renderSortIcon = (field) => {
     if (sortConfig.field !== field) return null;
@@ -98,7 +106,7 @@ const MotoristasList = ({
               Telefone
               {renderSortIcon('telefone')}
             </TableCell>
-            {user.role === 'ADMIN' && <TableCell sx={{ fontWeight: 'bold' }}>Ações</TableCell>}
+            <TableCell sx={{ fontWeight: 'bold' }}>Ações</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -107,18 +115,27 @@ const MotoristasList = ({
               <TableCell>{motorista.nome}</TableCell>
               <TableCell>{motorista.matricula}</TableCell>
               <TableCell>{motorista.telefone}</TableCell>
-              {user.role === 'ADMIN' && (
-                <TableCell>
-                  <Box sx={{ display: 'flex', gap: 1 }}>
-                    <IconButton color="primary" size="small" onClick={() => onEditMotorista(motorista)}>
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                    <IconButton color="error" size="small" onClick={() => onDeleteMotorista(motorista.id)}>
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
-                </TableCell>
-              )}
+
+              <TableCell>
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                  <IconButton
+                    disabled={isEditDisabled}
+                    color="primary"
+                    size="small"
+                    onClick={() => onEditMotorista(motorista)}
+                  >
+                    <EditIcon fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    disabled={isDeleteDisabled}
+                    color="error"
+                    size="small"
+                    onClick={() => onDeleteMotorista(motorista.id)}
+                  >
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </Box>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
