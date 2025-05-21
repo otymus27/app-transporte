@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
-  getMotoristas,
-  addMotorista,
+  getMotoristas,  
   updateMotorista,
   deleteMotorista,
 } from '../../services/MotoristaService.js';
@@ -90,50 +89,39 @@ export const useMotoristasLogic = (user, fetchTrigger) => {
     setSearchTerm('');
   };
 
-  // CRUD Operations
-  const handleSave = async () => {
-    if (!user || user.role !== 'ADMIN') {
-      setNotification({
-        open: true,
-        message: 'Apenas administradores podem salvar motoristas.',
-        severity: 'warning',
-      });
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const dataToSend = { ...formData };
-
-      let responseMessage = '';
-      if (selectedMotorista) {
-        await updateMotorista(selectedMotorista.id, dataToSend);
-        responseMessage = 'Motorista atualizado com sucesso!';
-      } else {
-        await addMotorista(dataToSend);
-        responseMessage = 'Motorista adicionado com sucesso!';
+   // Operações CRUD
+    const handleSave = async (dataToSend) => {
+      setIsLoading(true);
+      try {
+        let responseMessage = '';
+  
+        if (selectedMotorista) {
+          await updateMotorista(selectedMotorista.id, dataToSend);
+          responseMessage = 'Registro atualizado com sucesso!';
+        } else {
+          await updateMotorista(dataToSend);
+          responseMessage = 'Registro adicionado com sucesso!';
+        }
+  
+        setNotification({
+          open: true,
+          message: responseMessage,
+          severity: 'success',
+        });
+  
+        await fetchData();
+        handleCloseModal();
+      } catch (error) {
+        console.error('Erro ao salvar registro:', error);
+        setNotification({
+          open: true,
+          message: `Erro ao salvar registro: ${error.message || ''}`,
+          severity: 'error',
+        });
+      } finally {
+        setIsLoading(false);
       }
-
-      setNotification({
-        open: true,
-        message: responseMessage,
-        severity: 'success',
-      });
-
-      setSearchTerm('');
-      await fetchData();
-      handleCloseModal();
-    } catch (error) {
-      console.error('Erro ao salvar motorista:', error);
-      setNotification({
-        open: true,
-        message: `Erro ao salvar motorista: ${error.message || ''}`,
-        severity: 'error',
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    };
 
   const handleDeleteMotorista = async (motoristaId) => {
     if (!user || user.role !== 'ADMIN') {

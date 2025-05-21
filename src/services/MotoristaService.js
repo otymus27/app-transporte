@@ -43,8 +43,15 @@ export const addMotorista = async (motorista) => {
     const response = await API.post(API_URL, motorista);
     return response.data;
   } catch (error) {
-    console.error('Erro ao cadastrar motorista:', error);
-    throw error;
+    const status = error.response.status;
+    const data = error.response.data;
+    if (status === 409) {
+      // Violação de integridade
+      throw new Error(data.mensagem || 'Não foi possível cadastrar.');
+    } else {
+      // Outros erros
+      throw new Error('Erro na comunicação com o servidor.');
+    }
   }
 };
 
@@ -58,8 +65,15 @@ export const updateMotorista = async (id, motorista) => {
     const response = await API.put(`${API_URL}/${id}`, motorista);
     return response.data;
   } catch (error) {
-    console.error('Erro ao editar motorista:', error);
-    throw error;
+    const status = error.response.status;
+    const data = error.response.data;
+    if (status === 409) {
+      // Violação de integridade
+      throw new Error(data.mensagem || 'Não foi possível alterar.');
+    } else {
+      // Outros erros
+      throw new Error('Erro na comunicação com o servidor.');
+    }
   }
 };
 

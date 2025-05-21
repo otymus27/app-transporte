@@ -1,7 +1,7 @@
 import { API } from '../services/api';
 
 const API_URL = '/carro'; // Ajuste conforme sua configuração de backend
-const API_URL_1 = '/carro/paginado/'
+const API_URL_1 = '/carro/paginado/';
 
 /**
  * Busca todos os carros.
@@ -13,7 +13,6 @@ export const getCarros = async () => {
     const response = await API.get(API_URL);
     console.log('Carros:', response.data);
     return response.data;
-    
   } catch (error) {
     console.error('Erro ao buscar carros:', error);
     throw error;
@@ -29,7 +28,7 @@ export const getCarros = async () => {
 export const getCarrosPaginated = async (page, size) => {
   try {
     const response = await API.get(`${API_URL_1}?page=${page}&size=${size}`);
-     console.log('Carros:', response.data);
+    console.log('Carros:', response.data);
     return response.data;
   } catch (error) {
     console.error('Erro ao buscar carros paginados:', error);
@@ -47,8 +46,15 @@ export const addCarro = async (carro) => {
     const response = await API.post(API_URL, carro);
     return response.data;
   } catch (error) {
-    console.error('Erro ao cadastrar carro:', error);
-    throw error;
+    const status = error.response.status;
+    const data = error.response.data;
+    if (status === 409) {
+      // Violação de integridade
+      throw new Error(data.mensagem || 'Não foi possível cadastrar.');
+    } else {
+      // Outros erros
+      throw new Error('Erro na comunicação com o servidor.');
+    }
   }
 };
 
@@ -62,8 +68,15 @@ export const updateCarro = async (id, carro) => {
     const response = await API.put(`${API_URL}/${id}`, carro);
     return response.data;
   } catch (error) {
-    console.error('Erro ao editar carro:', error);
-    throw error;
+    const status = error.response.status;
+    const data = error.response.data;
+    if (status === 409) {
+      // Violação de integridade
+      throw new Error(data.mensagem || 'Não foi possível alterar.');
+    } else {
+      // Outros erros
+      throw new Error('Erro na comunicação com o servidor.');
+    }
   }
 };
 

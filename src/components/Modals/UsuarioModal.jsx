@@ -13,7 +13,7 @@ import {
   MenuItem,
 } from '@mui/material';
 
-const UsuarioModal = ({ open, onClose, selectedUsuario, formData, onFormChange, onSave, isLoading, user }) => {
+const UsuarioModal = ({ open, onClose, selectedUsuario, formData, onFormChange, onSave, isLoading }) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>{selectedUsuario ? 'Editar Usuário' : 'Adicionar Novo Usuário'}</DialogTitle>
@@ -61,11 +61,10 @@ const UsuarioModal = ({ open, onClose, selectedUsuario, formData, onFormChange, 
       </DialogContent>
       <DialogActions sx={{ pb: 2, pr: 2 }}>
         <Button onClick={onClose}>Cancelar</Button>
-        {user.role === 'ADMIN' && (
-          <Button variant="contained" onClick={onSave} disabled={isLoading}>
-            {isLoading ? <CircularProgress size={24} /> : 'Salvar'}
-          </Button>
-        )}
+
+        <Button variant="contained" onClick={onSave} disabled={isLoading}>
+          {isLoading ? <CircularProgress size={24} /> : 'Salvar'}
+        </Button>
       </DialogActions>
     </Dialog>
   );

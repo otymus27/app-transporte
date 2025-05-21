@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -10,8 +11,11 @@ import {
   Select,
   MenuItem,
   TextField,
+  FormHelperText,
 } from '@mui/material';
-import { useEffect } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { solicitacaoSchema } from '../../schemas/SolicitacaoSchema';
 
 const destinosDisponiveis = [
   'HRBZ',
@@ -22,7 +26,8 @@ const destinosDisponiveis = [
   'HRP',
   'HBDF',
   'HRT',
-  'HRBZ',
+  'HMIB',
+  'HRAN',
   'ADMC',
   'CAPS-SM',
   'CAPS-GAMA',
@@ -40,195 +45,255 @@ const SolicitacaoModal = ({
   motoristas = [],
   setores = [],
   carros = [],
-  formData,
-  setFormData,
 }) => {
-  const dataAtual = new Date().toISOString().split('T')[0]; // yyyy-mm-dd
   const isEditMode = Boolean(selectedSolicitacao);
+  const dataAtual = new Date().toISOString().split('T')[0];
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(solicitacaoSchema),
+    defaultValues: {
+      idMotorista: '',
+      idSetor: '',
+      idCarro: '',
+      destino: '',
+      dataSolicitacao: dataAtual,
+      status: 'PENDENTE',
+      horaSaida: '',
+      kmInicial: '',
+      horaChegada: '',
+      kmFinal: '',
+    },
+  });
 
   useEffect(() => {
-    if (!open) return;
-
-    console.log('selectedSolicitacao:', selectedSolicitacao);
-
-    if (selectedSolicitacao) {
-      setFormData({
-        idMotorista: selectedSolicitacao.idMotorista || '',
-        idSetor: selectedSolicitacao.idSetor || '',
-        idCarro: selectedSolicitacao.idCarro || '',
-        destino: selectedSolicitacao.destino || '',
-        dataSolicitacao: selectedSolicitacao.dataSolicitacao || dataAtual,
-        status: selectedSolicitacao.status || 'PENDENTE',
-        horaSaida: selectedSolicitacao.horaSaida || '',
-        kmInicial: selectedSolicitacao.kmInicial || '',
-        horaChegada: selectedSolicitacao.horaChegada || '',
-        kmFinal: selectedSolicitacao.kmFinal || '',
-      });
-    } else {
-      setFormData({
-        idMotorista: '',
-        idSetor: '',
-        idCarro: '',
-        destino: '',
-        dataSolicitacao: dataAtual,
-        status: 'PENDENTE',
-        horaSaida: '',
-        kmInicial: '',
-        horaChegada: '',
-        kmChegada: '',
+    if (open) {
+      reset({
+        idMotorista: selectedSolicitacao?.idMotorista || '',
+        idSetor: selectedSolicitacao?.idSetor || '',
+        idCarro: selectedSolicitacao?.idCarro || '',
+        destino: selectedSolicitacao?.destino || '',
+        dataSolicitacao: selectedSolicitacao?.dataSolicitacao || dataAtual,
+        status: selectedSolicitacao?.status || 'PENDENTE',
+        horaSaida: selectedSolicitacao?.horaSaida || '',
+        kmInicial: selectedSolicitacao?.kmInicial || '',
+        horaChegada: selectedSolicitacao?.horaChegada || '',
+        kmFinal: selectedSolicitacao?.kmFinal || '',
       });
     }
-  }, [open, selectedSolicitacao]);
+  }, [open, selectedSolicitacao, reset]);
 
-  const handleChange = (field) => (event) => {
-    setFormData((prev) => ({ ...prev, [field]: event.target.value }));
-  };
-
-  const handleSave = () => {
-    const payload = {
-      idMotorista: formData.idMotorista,
-      idSetor: formData.idSetor,
-      idCarro: formData.idCarro,
-      destino: formData.destino,
-      dataSolicitacao: formData.dataSolicitacao,
-      status: formData.status || 'PENDENTE',
-      horaSaida: formData.horaSaida,
-      kmInicial: formData.kmInicial,
-      horaChegada: formData.horaChegada,
-      kmFinal: formData.kmFinal,
-    };
-
-    onSave(payload);
+  const onSubmit = (data) => {
+    onSave(data);
   };
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>{isEditMode ? 'Editar Solicitação' : 'Nova Solicitação'}</DialogTitle>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <DialogTitle>{isEditMode ? 'Editar Solicitação' : 'Nova Solicitação'}</DialogTitle>
+        <DialogContent>
+          {/* Motorista */}
+          <Controller
+            name="idMotorista"
+            control={control}
+            render={({ field }) => (
+              <FormControl fullWidth margin="dense" error={!!errors.idMotorista} required>
+                <InputLabel id="motorista-label">Motorista</InputLabel>
+                <Select {...field} labelId="motorista-label" label="Motorista">
+                  <MenuItem value="">Selecione o motorista</MenuItem>
+                  {motoristas.map(({ id, nome }) => (
+                    <MenuItem key={id} value={id}>
+                      {nome}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{errors.idMotorista?.message}</FormHelperText>
+              </FormControl>
+            )}
+          />
 
-      <DialogContent>
-        {/* <TextField label="Usuário" value={user?.nome || ''} fullWidth margin="dense" variant="outlined" disabled /> */}
+          {/* Setor */}
+          <Controller
+            name="idSetor"
+            control={control}
+            render={({ field }) => (
+              <FormControl fullWidth margin="dense" error={!!errors.idSetor} required>
+                <InputLabel id="setor-label">Setor</InputLabel>
+                <Select {...field} labelId="setor-label" label="Setor">
+                  <MenuItem value="">Selecione o setor</MenuItem>
+                  {setores.map(({ id, nome }) => (
+                    <MenuItem key={id} value={id}>
+                      {nome}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{errors.idSetor?.message}</FormHelperText>
+              </FormControl>
+            )}
+          />
 
-        <FormControl fullWidth margin="dense" required>
-          <InputLabel id="motorista-label">Motorista</InputLabel>
-          <Select
-            labelId="motorista-label"
-            value={formData.idMotorista}
-            onChange={handleChange('idMotorista')}
-            label="Motorista"
-          >
-            <MenuItem value="">Selecione o motorista</MenuItem>
-            {motoristas.map(({ id, nome }) => (
-              <MenuItem key={id} value={id}>
-                {nome}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+          {/* Carro */}
+          <Controller
+            name="idCarro"
+            control={control}
+            render={({ field }) => (
+              <FormControl fullWidth margin="dense" error={!!errors.idCarro} required>
+                <InputLabel id="carro-label">Carro</InputLabel>
+                <Select {...field} labelId="carro-label" label="Carro">
+                  <MenuItem value="">Selecione o carro</MenuItem>
+                  {carros.map(({ id, marca, modelo, placa }) => (
+                    <MenuItem key={id} value={id}>
+                      {`${marca} ${modelo} (${placa})`}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{errors.idCarro?.message}</FormHelperText>
+              </FormControl>
+            )}
+          />
 
-        <FormControl fullWidth margin="dense" required>
-          <InputLabel id="setor-label">Setor</InputLabel>
-          <Select labelId="setor-label" value={formData.idSetor} onChange={handleChange('idSetor')} label="Setor">
-            <MenuItem value="">Selecione o setor</MenuItem>
-            {setores.map(({ id, nome }) => (
-              <MenuItem key={id} value={id}>
-                {nome}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+          {/* Destino */}
+          <Controller
+            name="destino"
+            control={control}
+            render={({ field }) => (
+              <FormControl fullWidth margin="dense" error={!!errors.destino} required>
+                <InputLabel id="destino-label">Destino</InputLabel>
+                <Select {...field} labelId="destino-label" label="Destino">
+                  {destinosDisponiveis.map((destino) => (
+                    <MenuItem key={destino} value={destino}>
+                      {destino}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{errors.destino?.message}</FormHelperText>
+              </FormControl>
+            )}
+          />
 
-        <FormControl fullWidth margin="dense" required>
-          <InputLabel id="carro-label">Carro</InputLabel>
-          <Select labelId="carro-label" value={formData.idCarro} onChange={handleChange('idCarro')} label="Carro">
-            <MenuItem value="">Selecione o carro</MenuItem>
-            {carros.map(({ id, marca, modelo, placa }) => (
-              <MenuItem key={id} value={id}>
-                {`${marca} ${modelo} (${placa})`}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+          {/* Data da Solicitação */}
+          <Controller
+            name="dataSolicitacao"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="Data da Solicitação"
+                type="date"
+                fullWidth
+                margin="dense"
+                InputLabelProps={{ shrink: true }}
+                {...field}
+                error={!!errors.dataSolicitacao}
+                helperText={errors.dataSolicitacao?.message}
+              />
+            )}
+          />
 
-        <FormControl fullWidth margin="dense" required>
-          <InputLabel id="destino-label">Destino</InputLabel>
-          <Select labelId="destino-label" value={formData.destino} onChange={handleChange('destino')} label="Destino">
-            {destinosDisponiveis.map((destino) => (
-              <MenuItem key={destino} value={destino}>
-                {destino}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+          {/* Status (apenas edição) */}
+          {isEditMode && (
+            <Controller
+              name="status"
+              control={control}
+              render={({ field }) => (
+                <FormControl fullWidth margin="dense">
+                  <InputLabel id="status-label">Status</InputLabel>
+                  <Select {...field} labelId="status-label" label="Status">
+                    <MenuItem value="PENDENTE">PENDENTE</MenuItem>
+                    <MenuItem value="CONCLUIDA">CONCLUIDA</MenuItem>
+                    <MenuItem value="RECUSADA">RECUSADA</MenuItem>
+                    <MenuItem value="CANCELADA">CANCELADA</MenuItem>
+                  </Select>
+                </FormControl>
+              )}
+            />
+          )}
 
-        <TextField
-          label="Data da Solicitação"
-          type="date"
-          value={formData.dataSolicitacao}
-          onChange={handleChange('dataSolicitacao')}
-          fullWidth
-          margin="dense"
-          variant="outlined"
-        />
+          {/* Horário da saída */}
+          <Controller
+            name="horaSaida"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="Horário da saída"
+                type="time"
+                fullWidth
+                margin="dense"
+                InputLabelProps={{ shrink: true }}
+                {...field}
+                error={!!errors.horaSaida}
+                helperText={errors.horaSaida?.message}
+              />
+            )}
+          />
 
-        {isEditMode && (
-          <FormControl fullWidth margin="dense" required>
-            <InputLabel id="status-label">Status</InputLabel>
-            <Select labelId="status-label" value={formData.status} onChange={handleChange('status')} label="Status">
-              <MenuItem value="PENDENTE">PENDENTE</MenuItem>
-              <MenuItem value="CONCLUIDA">CONCLUIDA</MenuItem>
-              <MenuItem value="RECUSADA">RECUSADA</MenuItem>
-              <MenuItem value="CANCELADA">CANCELADA</MenuItem>
-            </Select>
-          </FormControl>
-        )}
+          {/* KM Inicial */}
+          <Controller
+            name="kmInicial"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="KM Inicial"
+                type="number"
+                fullWidth
+                margin="dense"
+                {...field}
+                onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : '')}
+                value={field.value || ''}
+                error={!!errors.kmInicial}
+                helperText={errors.kmInicial?.message}
+              />
+            )}
+          />
 
-        <TextField
-          label="Horário da saída"
-          type="time"
-          value={formData.horaSaida}
-          onChange={handleChange('horaSaida')}
-          fullWidth
-          margin="dense"
-          variant="outlined"
-        />
+          {/* Horário da chegada */}
+          <Controller
+            name="horaChegada"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="Horário da chegada"
+                type="time"
+                fullWidth
+                margin="dense"
+                InputLabelProps={{ shrink: true }}
+                {...field}
+                error={!!errors.horaChegada}
+                helperText={errors.horaChegada?.message}
+              />
+            )}
+          />
 
-        <TextField
-          label="KM Inicial"
-          type="number"
-          value={formData.kmInicial}
-          onChange={handleChange('kmInicial')}
-          fullWidth
-          margin="dense"
-          variant="outlined"
-        />
+          {/* KM Final */}
+          <Controller
+            name="kmFinal"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="KM Final"
+                type="number"
+                fullWidth
+                margin="dense"
+                {...field}
+                onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : '')}
+                value={field.value || ''}
+                error={!!errors.kmFinal}
+                helperText={errors.kmFinal?.message}
+              />
+            )}
+          />
+        </DialogContent>
 
-        <TextField
-          label="Horário da chegada"
-          type="time"
-          value={formData.horaChegada}
-          onChange={handleChange('horaChegada')}
-          fullWidth
-          margin="dense"
-          variant="outlined"
-        />
-
-        <TextField
-          label="KM Final"
-          type="number"
-          value={formData.kmFinal}
-          onChange={handleChange('kmFinal')}
-          fullWidth
-          margin="dense"
-          variant="outlined"
-        />
-      </DialogContent>
-
-      <DialogActions sx={{ pb: 2, pr: 2 }}>
-        <Button onClick={onClose}>Cancelar</Button>
-        <Button variant="contained" onClick={handleSave} disabled={isLoading}>
-          {isLoading ? <CircularProgress size={24} /> : 'Salvar'}
-        </Button>
-      </DialogActions>
+        <DialogActions sx={{ pb: 2, pr: 2 }}>
+          <Button onClick={onClose}>Cancelar</Button>
+          <Button type="submit" variant="contained" disabled={isLoading}>
+            {isLoading ? <CircularProgress size={24} /> : 'Salvar'}
+          </Button>
+        </DialogActions>
+      </form>
     </Dialog>
   );
 };

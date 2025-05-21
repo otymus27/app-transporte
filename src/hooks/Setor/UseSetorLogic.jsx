@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getSetores, addSetor, updateSetor, deleteSetor } from '../../services/SetorService.js';
+import { getSetores, updateSetor, deleteSetor } from '../../services/SetorService.js';
 import useDebounce from '../../hooks/useDebounce.js';
 
 export const useSetorLogic = (user, fetchTrigger) => {
@@ -74,28 +74,18 @@ export const useSetorLogic = (user, fetchTrigger) => {
     setSearchTerm('');
   };
 
-  // CRUD Operations
-  const handleSave = async () => {
-    if (!user || user.role !== 'ADMIN') {
-      setNotification({
-        open: true,
-        message: 'Apenas administradores podem salvar setores.',
-        severity: 'warning',
-      });
-      return;
-    }
-
+  // Operações CRUD
+  const handleSave = async (dataToSend) => {
     setIsLoading(true);
     try {
-      const dataToSend = { ...formData };
-
       let responseMessage = '';
+
       if (selectedSetor) {
         await updateSetor(selectedSetor.id, dataToSend);
-        responseMessage = 'Setor atualizado com sucesso!';
+        responseMessage = 'Registro atualizado com sucesso!';
       } else {
-        await addSetor(dataToSend);
-        responseMessage = 'Setor adicionado com sucesso!';
+        await updateSetor(dataToSend);
+        responseMessage = 'Registro adicionado com sucesso!';
       }
 
       setNotification({
@@ -104,14 +94,13 @@ export const useSetorLogic = (user, fetchTrigger) => {
         severity: 'success',
       });
 
-      setSearchTerm('');
       await fetchData();
       handleCloseModal();
     } catch (error) {
-      console.error('Erro ao salvar setor:', error);
+      console.error('Erro ao salvar registro:', error);
       setNotification({
         open: true,
-        message: `Erro ao salvar setor: ${error.message || ''}`,
+        message: `Erro ao salvar registro: ${error.message || ''}`,
         severity: 'error',
       });
     } finally {

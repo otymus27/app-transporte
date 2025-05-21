@@ -43,8 +43,15 @@ export const addSetor = async (setor) => {
     const response = await API.post(API_URL, setor);
     return response.data;
   } catch (error) {
-    console.error('Erro ao cadastrar setor:', error);
-    throw error;
+    const status = error.response.status;
+    const data = error.response.data;
+    if (status === 409) {
+      // Violação de integridade
+      throw new Error(data.mensagem || 'Não foi possível cadastrar.');
+    } else {
+      // Outros erros
+      throw new Error('Erro na comunicação com o servidor.');
+    }
   }
 };
 
@@ -58,8 +65,15 @@ export const updateSetor = async (id, setor) => {
     const response = await API.put(`${API_URL}/${id}`, setor);
     return response.data;
   } catch (error) {
-    console.error('Erro ao editar setor:', error);
-    throw error;
+    const status = error.response.status;
+    const data = error.response.data;
+    if (status === 409) {
+      // Violação de integridade
+      throw new Error(data.mensagem || 'Não foi possível alterar.');
+    } else {
+      // Outros erros
+      throw new Error('Erro na comunicação com o servidor.');
+    }
   }
 };
 

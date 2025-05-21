@@ -43,8 +43,15 @@ export const addUsuario = async (usuario) => {
     const response = await API.post(API_URL, usuario);
     return response.data;
   } catch (error) {
-    console.error('Erro ao cadastrar usuário:', error);
-    throw error;
+    const status = error.response.status;
+    const data = error.response.data;
+    if (status === 409) {
+      // Violação de integridade
+      throw new Error(data.mensagem || 'Não foi possível cadastrar.');
+    } else {
+      // Outros erros
+      throw new Error('Erro na comunicação com o servidor.');
+    }
   }
 };
 
@@ -58,8 +65,15 @@ export const updateUsuario = async (id, usuario) => {
     const response = await API.put(`${API_URL}/${id}`, usuario);
     return response.data;
   } catch (error) {
-    console.error('Erro ao editar usuário:', error);
-    throw error;
+    const status = error.response.status;
+    const data = error.response.data;
+    if (status === 409) {
+      // Violação de integridade
+      throw new Error(data.mensagem || 'Não foi possível alterar.');
+    } else {
+      // Outros erros
+      throw new Error('Erro na comunicação com o servidor.');
+    }
   }
 };
 

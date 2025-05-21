@@ -1,10 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import {
-  getSolicitacoes,
-  addSolicitacao,
-  updateSolicitacao,
-  deleteSolicitacao,
-} from '../../services/SolicitacaoService.js';
+import { getSolicitacoes, updateSolicitacao, deleteSolicitacao } from '../../services/SolicitacaoService.js';
 import useDebounce from '../../hooks/useDebounce.js';
 import { getMotoristas } from '../../services/MotoristaService.js';
 import { getSetores } from '../../services/SetorService.js';
@@ -22,7 +17,8 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
 
   const [openModal, setOpenModal] = useState(false);
   const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
-  const [formData, setFormData] = useState({
+
+  const initialFormData = {
     idMotorista: '',
     idSetor: '',
     idCarro: '',
@@ -33,7 +29,9 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
     kmInicial: '',
     horaChegada: '',
     kmFinal: '',
-  });
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
 
   const [notification, setNotification] = useState({
     open: false,
@@ -85,9 +83,8 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
     fetchListas();
   }, [fetchData, fetchListas, fetchTrigger]);
 
-  // Aqui é feita a filtragem dos campos por motorista e destino
   useEffect(() => {
-    let currentData = [...allSolicitacoes];
+    let currentData = allSolicitacoes;
     if (debouncedSearchTerm) {
       const term = debouncedSearchTerm.toLowerCase();
       currentData = allSolicitacoes.filter(
@@ -104,85 +101,39 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
     setFormData(
       solicitacao
         ? {
-            dataSolicitacao: solicitacao.dataSolicitacao || '',
-            destino: solicitacao.destino || '',
-            status: solicitacao.status || 'PENDENTE',
-            idCarro: solicitacao.idCarro || '',
             idMotorista: solicitacao.idMotorista || '',
             idSetor: solicitacao.idSetor || '',
+            idCarro: solicitacao.idCarro || '',
+            destino: solicitacao.destino || '',
+            dataSolicitacao: solicitacao.dataSolicitacao || new Date().toISOString().split('T')[0],
+            status: solicitacao.status || 'PENDENTE',
             horaSaida: solicitacao.horaSaida || '',
             kmInicial: solicitacao.kmInicial || '',
             horaChegada: solicitacao.horaChegada || '',
             kmFinal: solicitacao.kmFinal || '',
           }
-        : {
-            dataSolicitacao: new Date().toISOString().split('T')[0],
-            destino: '',
-            status: 'PENDENTE',
-            idCarro: '',
-            idMotorista: '',
-            idSetor: '',
-            horaSaida: '',
-            kmInicial: '',
-            horaChegada: '',
-            kmFinal: '',
-          },
+        : initialFormData,
     );
     setOpenModal(true);
   };
 
-  useEffect(() => {
-    if (!openModal) return;
-
-    if (selectedSolicitacao) {
-      setFormData({
-        idMotorista: selectedSolicitacao.idMotorista || '',
-        idSetor: selectedSolicitacao.idSetor || '',
-        idCarro: selectedSolicitacao.idCarro || '',
-        destino: selectedSolicitacao.destino || '',
-        dataSolicitacao: selectedSolicitacao.dataSolicitacao || new Date().toISOString().split('T')[0],
-        status: selectedSolicitacao.status || 'PENDENTE',
-        horaSaida: selectedSolicitacao.horaSaida || '',
-        kmInicial: selectedSolicitacao.kmInicial || '',
-        horaChegada: selectedSolicitacao.horaChegada || '',
-        kmFinal: selectedSolicitacao.kmFinal || '',
-      });
-    } else {
-      setFormData({
-        idMotorista: '',
-        idSetor: '',
-        idCarro: '',
-        destino: '',
-        dataSolicitacao: new Date().toISOString().split('T')[0],
-        status: 'PENDENTE',
-        horaSaida: '',
-        kmInicial: '',
-        horaChegada: '',
-        kmFinal: '',
-      });
-    }
-  }, [openModal, selectedSolicitacao]);
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setSelectedSolicitacao(null);
+    setFormData(initialFormData);
+  };
 
   const handleSave = async (dataToSend) => {
-    //Lógica para permitir determinado perfil a executar esta ação
-    if (!user || (user.role !== 'ADMIN' && user.role !== 'GERENTE' && user.role !== 'BASIC')) {
-      setNotification({
-        open: true,
-        message: 'Apenas administradores podem salvar solicitações.',
-        severity: 'warning',
-      });
-      return;
-    }
-
     setIsLoading(true);
     try {
       let responseMessage = '';
+
       if (selectedSolicitacao) {
         await updateSolicitacao(selectedSolicitacao.id, dataToSend);
-        responseMessage = 'Solicitação atualizada com sucesso!';
+        responseMessage = 'Registro atualizado com sucesso!';
       } else {
-        await addSolicitacao(dataToSend);
-        responseMessage = 'Solicitação adicionada com sucesso!';
+        await updateSolicitacao(dataToSend); // Sugiro criar createSolicitacao
+        responseMessage = 'Registro adicionado com sucesso!';
       }
 
       setNotification({
@@ -194,10 +145,10 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
       await fetchData();
       handleCloseModal();
     } catch (error) {
-      console.error('Erro ao salvar solicitação:', error);
+      console.error('Erro ao salvar registro:', error);
       setNotification({
         open: true,
-        message: `Erro ao salvar solicitação: ${error.message || ''}`,
+        message: `Erro ao salvar registro: ${error.message || ''}`,
         severity: 'error',
       });
     } finally {
@@ -205,26 +156,7 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
     }
   };
 
-  const handleCloseModal = () => {
-    setOpenModal(false);
-    setSelectedSolicitacao(null);
-    setFormData({
-      dataSolicitacao: new Date().toISOString().split('T')[0],
-      destino: '',
-      status: 'PENDENTE',
-      idCarro: '',
-      idMotorista: '',
-      idSetor: '',
-      horaSaida: '',
-      kmInicial: '',
-      horaChegada: '',
-      kmFinal: '',
-    });
-    setSearchTerm('');
-  };
-
   const handleDeleteSolicitacao = async (id) => {
-    //Lógica para permitir determinado perfil a executar esta ação
     if (!user || (user.role !== 'ADMIN' && user.role !== 'GERENTE')) {
       setNotification({
         open: true,
@@ -261,7 +193,7 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
 
   const handleCloseNotification = (event, reason) => {
     if (reason === 'clickaway') return;
-    setNotification({ ...notification, open: false });
+    setNotification((prev) => ({ ...prev, open: false }));
   };
 
   return {

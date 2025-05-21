@@ -1,10 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import {
-  getCarros,
-  addCarro,
-  updateCarro,
-  deleteCarro,
-} from '../../services/CarroService.js';
+import { getCarros, addCarro, updateCarro, deleteCarro } from '../../services/CarroService.js';
 import useDebounce from '../../hooks/useDebounce.js';
 
 export const useCarroLogic = (user, fetchTrigger) => {
@@ -63,7 +58,7 @@ export const useCarroLogic = (user, fetchTrigger) => {
         (c) =>
           (c.modelo && c.modelo.toLowerCase().includes(term)) ||
           (c.placa && c.placa.toLowerCase().includes(term)) ||
-          (c.marca && c.marca.toLowerCase().includes(term))
+          (c.marca && c.marca.toLowerCase().includes(term)),
       );
     }
     setFilteredCarros(currentData);
@@ -75,7 +70,7 @@ export const useCarroLogic = (user, fetchTrigger) => {
     setFormData(
       carro
         ? { modelo: carro.modelo || '', placa: carro.placa || '', marca: carro.marca || '' }
-        : { modelo: '', placa: '', marca: '' }
+        : { modelo: '', placa: '', marca: '' },
     );
     setOpenModal(true);
   };
@@ -88,27 +83,17 @@ export const useCarroLogic = (user, fetchTrigger) => {
   };
 
   // Operações CRUD
-  const handleSave = async () => {
-    if (!user || user.role !== 'ADMIN') {
-      setNotification({
-        open: true,
-        message: 'Apenas administradores podem salvar carros.',
-        severity: 'warning',
-      });
-      return;
-    }
-
+  const handleSave = async (dataToSend) => {
     setIsLoading(true);
     try {
-      const dataToSend = { ...formData };
-
       let responseMessage = '';
+
       if (selectedCarro) {
         await updateCarro(selectedCarro.id, dataToSend);
-        responseMessage = 'Carro atualizado com sucesso!';
+        responseMessage = 'Registro atualizado com sucesso!';
       } else {
         await addCarro(dataToSend);
-        responseMessage = 'Carro adicionado com sucesso!';
+        responseMessage = 'Registro adicionado com sucesso!';
       }
 
       setNotification({
@@ -117,14 +102,13 @@ export const useCarroLogic = (user, fetchTrigger) => {
         severity: 'success',
       });
 
-      setSearchTerm('');
       await fetchData();
       handleCloseModal();
     } catch (error) {
-      console.error('Erro ao salvar carro:', error);
+      console.error('Erro ao salvar registro:', error);
       setNotification({
         open: true,
-        message: `Erro ao salvar carro: ${error.message || ''}`,
+        message: `Erro ao salvar registro: ${error.message || ''}`,
         severity: 'error',
       });
     } finally {
@@ -163,7 +147,7 @@ export const useCarroLogic = (user, fetchTrigger) => {
     }
   };
 
-   // Search Handling
+  // Search Handling
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -181,7 +165,7 @@ export const useCarroLogic = (user, fetchTrigger) => {
     isLoading,
     openModal,
     selectedCarro,
-    formData,    
+    formData,
     notification,
 
     setSearchTerm,
