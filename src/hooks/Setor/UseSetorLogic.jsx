@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getSetores, updateSetor, deleteSetor } from '../../services/SetorService.js';
+import { getSetores, updateSetor, deleteSetor, addSetor } from '../../services/SetorService.js';
 import useDebounce from '../../hooks/useDebounce.js';
 
 export const useSetorLogic = (user, fetchTrigger) => {
@@ -84,7 +84,7 @@ export const useSetorLogic = (user, fetchTrigger) => {
         await updateSetor(selectedSetor.id, dataToSend);
         responseMessage = 'Registro atualizado com sucesso!';
       } else {
-        await updateSetor(dataToSend);
+        await addSetor(dataToSend);
         responseMessage = 'Registro adicionado com sucesso!';
       }
 

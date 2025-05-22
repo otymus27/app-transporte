@@ -3,6 +3,7 @@ import {
   getMotoristas,  
   updateMotorista,
   deleteMotorista,
+  addMotorista,
 } from '../../services/MotoristaService.js';
 import useDebounce from '../../hooks/useDebounce.js';
 
@@ -99,7 +100,7 @@ export const useMotoristasLogic = (user, fetchTrigger) => {
           await updateMotorista(selectedMotorista.id, dataToSend);
           responseMessage = 'Registro atualizado com sucesso!';
         } else {
-          await updateMotorista(dataToSend);
+          await addMotorista(dataToSend);
           responseMessage = 'Registro adicionado com sucesso!';
         }
   

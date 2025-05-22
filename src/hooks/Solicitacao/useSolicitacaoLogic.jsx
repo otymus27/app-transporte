@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getSolicitacoes, updateSolicitacao, deleteSolicitacao } from '../../services/SolicitacaoService.js';
+import { getSolicitacoes, updateSolicitacao, deleteSolicitacao, addSolicitacao } from '../../services/SolicitacaoService.js';
 import useDebounce from '../../hooks/useDebounce.js';
 import { getMotoristas } from '../../services/MotoristaService.js';
 import { getSetores } from '../../services/SetorService.js';
@@ -132,7 +132,7 @@ export const useSolicitacaoLogic = (user, fetchTrigger) => {
         await updateSolicitacao(selectedSolicitacao.id, dataToSend);
         responseMessage = 'Registro atualizado com sucesso!';
       } else {
-        await updateSolicitacao(dataToSend); // Sugiro criar createSolicitacao
+        await addSolicitacao(dataToSend); // Sugiro criar createSolicitacao
         responseMessage = 'Registro adicionado com sucesso!';
       }
 
