@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, CircularProgress } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { setorSchema } from '../../schemas/setorSchema';
+import { setorSchema } from '../../schemas/SetorSchema.js';
 
 const SetorModal = ({ open, onClose, selectedSetor, onSave, isLoading }) => {
   const {

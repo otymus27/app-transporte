@@ -15,7 +15,7 @@ import {
 
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { carroSchema } from '../../schemas/carroSchema';
+import { carroSchema } from '../../schemas/CarroSchema.js';
 import { useEffect } from 'react';
 
 const marcasDisponiveis = [

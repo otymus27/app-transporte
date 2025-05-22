@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 // Hooks e Componentes personalizados
 import useAuth from '../../hooks/useAuth.jsx';
-import { useSetorLogic } from '../../hooks/Setor/useSetorLogic.jsx';
+import { useSetorLogic } from '../../hooks/Setor/UseSetorLogic.jsx';
 import SetorList from '../../pages/Setor/SetorList.jsx';
 import SetorModal from '../../components/Modals/SetorModal.jsx';
 import GerarRelatorioSetores from '../../components/Relatorios/SetorRelatorios.jsx';

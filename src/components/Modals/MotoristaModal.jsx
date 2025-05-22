@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, CircularProgress } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { motoristaSchema } from '../../schemas/motoristaSchema';
+import { motoristaSchema } from '../../schemas/MotoristaSchema.js';
 
 const MotoristaModal = ({ open, onClose, selectedMotorista, onSave, isLoading }) => {
   const {
